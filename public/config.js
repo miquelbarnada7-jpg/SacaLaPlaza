@@ -5,7 +5,7 @@
 const CONFIG = {
   siteName: "Tema Común",
   siteUrl: "",                 // Tu dominio, p. ej. "https://temacomun.es" (sin barra final)
-  contactEmail: "",            // Email de contacto que se muestra en la web
+  contactEmail: "miquel.barnada7@gmail.com",            // Email de contacto que se muestra en la web
 
   // --- Premium ---
   price: "2",                  // Precio que se muestra (IVA incluido). Cámbialo también en PRICE de Cloudflare.
