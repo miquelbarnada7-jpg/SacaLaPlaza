@@ -23,9 +23,9 @@ const CONFIG = {
 
   // --- Datos legales (obligatorios en España, Ley 34/2002 LSSI) ---
   legal: {
-    titular: "[Tu nombre y apellidos]",
-    nif: "[Tu NIF]",
-    domicilio: "[Tu domicilio]",
-    email: "[Tu email de contacto]"
+    titular: "Miquel Barnada I Noguer",
+    nif: "42361903C",
+    domicilio: "c/joan maragall 4",
+    email: "miquel.barnada7@gmail.com"
   }
 };
