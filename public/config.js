@@ -9,7 +9,7 @@ const CONFIG = {
 
   // --- Premium ---
   price: "2",                  // Precio que se muestra (IVA incluido). Cámbialo también en PRICE de Cloudflare.
-  paypalClientId: "",          // Client ID de tu app de PayPal. Vacío = pagos desactivados.
+  paypalClientId: "BAAikZnjRz3B1f4pUW5xaKxHCv39DYjw4q1Hba6YSuJE8ZeLDyldKu80qrrz2sTtctl53-2oLXyl1SZDXQ",          // Client ID de tu app de PayPal. Vacío = pagos desactivados.
   api: "/api",                 // Ruta de las funciones de servidor (no la cambies)
   manualPayment: "",           // Opcional: instrucciones de Bizum o transferencia. Vacío = no se muestra.
   demo: false,                 // Déjalo en false en la web publicada.
