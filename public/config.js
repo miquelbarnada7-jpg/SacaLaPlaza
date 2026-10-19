@@ -8,7 +8,7 @@ const CONFIG = {
   contactEmail: "miquel.barnada7@gmail.com",            // Email de contacto que se muestra en la web
 
   // --- Premium ---
-  price: "2",                  // Precio que se muestra (IVA incluido). Cámbialo también en PRICE de Cloudflare.
+  price: "4,99",               // Precio que se muestra (IVA incluido). Cámbialo también en PRICE de Cloudflare (con punto: 4.99).
   paypalClientId: "BAAikZnjRz3B1f4pUW5xaKxHCv39DYjw4q1Hba6YSuJE8ZeLDyldKu80qrrz2sTtctl53-2oLXyl1SZDXQ",          // Client ID de tu app de PayPal. Vacío = pagos desactivados.
   api: "/api",                 // Ruta del servidor (no la cambies)
   manualPayment: "",           // Opcional: instrucciones de Bizum o transferencia. Vacío = no se muestra.

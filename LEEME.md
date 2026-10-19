@@ -42,7 +42,7 @@ En **Settings → Variables and Secrets** deben estar estas (los nombres, exacta
 | `PAYPAL_CLIENT_SECRET` | el Secret de PayPal | Secret |
 | `PAYPAL_ENV` | `sandbox` para pruebas, `live` para cobrar de verdad | Text |
 | `LICENSE_SECRET` | una frase larga inventada (40 caracteres o más) | Secret |
-| `PRICE` | `2.00` | Text |
+| `PRICE` | `4.99` | Text |
 
 `LICENSE_SECRET` protege las contraseñas y los códigos de recuperación. **No la cambies nunca**: si la cambias, nadie podrá iniciar sesión con su contraseña actual.
 
@@ -92,7 +92,7 @@ Si algún valor sale `false`, revisa el paso correspondiente.
 2. En Cloudflare cambia `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` y pon `PAYPAL_ENV` en `live`.
 3. En `public/config.js` pon el Client ID Live en `paypalClientId`. Guarda: se publica solo.
 
-PayPal cobra en España 2,90 % + 0,35 € por venta: de cada 2 € te quedan unos 1,59 €.
+PayPal cobra en España 2,90 % + 0,35 € por venta: de cada 4,99 € te quedan unos 4,50 € (de los que unos 0,87 € son IVA).
 
 ## Sube tus apuntes
 
@@ -160,7 +160,7 @@ DELETE FROM users WHERE email = 'correo@ejemplo.com';
 **Alta en Hacienda (gratis).** Modelo 036 antes de empezar a cobrar, en el epígrafe de servicios de publicidad o de servicios digitales que te indique el gestor. En el mismo modelo pide el alta en el **ROI** (operadores intracomunitarios): AdSense te paga desde Google Ireland y sin ROI no puedes facturarle correctamente.
 
 **IVA.**
-- Premium (venta a particulares): se cobra IVA español del 21 % mientras tus ventas a consumidores de otros países de la UE no pasen de 10.000 € al año. Con 2 € IVA incluido, unos 0,35 € son IVA. Hoy no hay en España un mínimo de ventas por debajo del cual no se cobre IVA.
+- Premium (venta a particulares): se cobra IVA español del 21 % mientras tus ventas a consumidores de otros países de la UE no pasen de 10.000 € al año. Con 4,99 € IVA incluido, unos 0,87 € son IVA. Hoy no hay en España un mínimo de ventas por debajo del cual no se cobre IVA.
 - AdSense (Google Ireland, empresa de la UE): factura sin IVA, por *inversión del sujeto pasivo*, e informa en el modelo 349.
 - Declaraciones: modelo 303 cada trimestre y 390 al año.
 

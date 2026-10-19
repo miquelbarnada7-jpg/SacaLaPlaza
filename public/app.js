@@ -282,7 +282,7 @@ const withCEpref = () => store.get("withCE", true);
 /* ============================================================
    RUTAS
    ============================================================ */
-const PAGES = { inicio: "/", calculadora: "/calculadora-nota/", subir: "/sube-tus-apuntes/", privacidad: "/privacidad/", cookies: "/cookies/", "aviso-legal": "/aviso-legal/", condiciones: "/condiciones/" };
+const PAGES = { inicio: "/", calculadora: "/calculadora-nota/", subir: "/sube-tus-apuntes/", premium: "/premium/", progreso: "/mi-progreso/", cuenta: "/mi-cuenta/", privacidad: "/privacidad/", cookies: "/cookies/", "aviso-legal": "/aviso-legal/", condiciones: "/condiciones/" };
 function href(route){
   if (CONFIG.pathRoutes){
     if (PAGES[route]) return PAGES[route];
@@ -694,7 +694,8 @@ function viewProgress(){
 }
 
 /* ---------- Cuenta: entrar, crear, recuperar y perfil ---------- */
-let authTab = "login";
+// La pestaña elegida (entrar o crear cuenta) sobrevive a la recarga al pasar a /mi-cuenta/.
+let authTab = (() => { const t = store.get("authTab", ""); if (t) store.set("authTab", ""); return t || "login"; })();
 function opoOptions(sel){ return '<option value="">Todavía no lo sé</option>' + CATS.map(c => '<option value="'+c.id+'"'+(sel === c.id ? " selected" : "")+'>'+esc(c.name)+'</option>').join(""); }
 function recoveryBox(code, title){
   return '<div class="recov"><p class="label">'+(title || "Tu código de recuperación")+'</p><div class="code big-code" id="recCode">'+esc(code)+'</div><p>Guárdalo en un sitio seguro (una nota del móvil, una foto…). <b>Es la única forma de recuperar tu cuenta si olvidas la contraseña</b>, porque no enviamos emails.</p><div class="grp" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-act="copyRec">Copiar código</button><button class="btn small ghost" data-act="recDone">Ya lo he guardado</button></div><div id="recOut"></div></div>';
@@ -927,8 +928,8 @@ const ACT = {
     initAds();
     setTimeout(() => { if (!window.googlefc || typeof window.googlefc.showRevocationMessage !== "function") toast("No se ha podido abrir el panel. Desactiva el bloqueador de anuncios e inténtalo de nuevo."); }, 4000);
   },
-  toRegister: b => { authTab = "register"; if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta") render(); else location.hash = "cuenta"; },
-  toLogin: b => { authTab = "login"; if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta") render(); else location.hash = "cuenta"; },
+  toRegister: b => { authTab = "register"; store.set("authTab", "register"); if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta"){ store.set("authTab", ""); render(); } else location.hash = "cuenta"; },
+  toLogin: b => { authTab = "login"; store.set("authTab", "login"); if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta"){ store.set("authTab", ""); render(); } else location.hash = "cuenta"; },
   tab: b => { authTab = b.dataset.t; viewCuenta(); },
   copyRec: () => copyText(($("#recCode") || {}).textContent || "", "#recOut"),
   recDone: () => { window.__slpRec = null; const t = window.__slpRecThen; window.__slpRecThen = null; if (t) t(); else viewCuenta(); },
@@ -1025,8 +1026,28 @@ function render(){
   if (r !== "oposiciones" && r !== "calendario") window.scrollTo(0, 0);
   initAds();
 }
-window.addEventListener("hashchange", render);
+// Cada sección es una página real (/premium/, /mi-cuenta/…): al cambiar de sección se carga la página
+// de nuevo, así cuenta como una visita más y los anuncios automáticos se recolocan.
+function pathForRoute(r){
+  if (!CONFIG.pathRoutes || CONFIG.demo || !r) return null;
+  if (PAGES[r]) return PAGES[r];
+  if (r.indexOf("op-") === 0){ const p = href(r); return p.charAt(0) === "/" ? p : null; }
+  return null;
+}
+function routeOrGo(){
+  const h = location.hash.replace(/^#/, ""), p = pathForRoute(h);
+  if (p && p !== location.pathname){ location.replace(p + location.search); return false; }
+  if (p && p === location.pathname) history.replaceState(null, "", p + location.search);
+  return true;
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || a.dataset.act || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  const p = pathForRoute(a.getAttribute("href").slice(1));
+  if (p && p !== location.pathname){ e.preventDefault(); location.href = p; }
+});
+window.addEventListener("hashchange", () => { if (routeOrGo()) render(); });
 applyTheme(store.get("theme", "auto"));
-refreshHeader(); renderNotice(); renderFooter(); render();
+if (routeOrGo()){ refreshHeader(); renderNotice(); renderFooter(); render(); }
 loadMe();
 })();

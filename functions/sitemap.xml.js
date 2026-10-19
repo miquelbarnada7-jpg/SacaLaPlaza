@@ -1,5 +1,5 @@
 // GET /sitemap.xml → mapa del sitio con la dirección real de la web (.pages.dev o tu dominio).
-const PATHS = ["/","/sube-tus-apuntes/","/privacidad/","/cookies/","/aviso-legal/","/condiciones/","/calculadora-nota/","/oposiciones/constitucion/","/oposiciones/administracion-estado/","/oposiciones/justicia/","/oposiciones/hacienda/","/oposiciones/prisiones/","/oposiciones/policia-nacional/","/oposiciones/guardia-civil/","/oposiciones/policia-local/","/oposiciones/bomberos/","/oposiciones/sanidad/","/oposiciones/educacion/"];
+const PATHS = ["/","/sube-tus-apuntes/","/premium/","/privacidad/","/cookies/","/aviso-legal/","/condiciones/","/calculadora-nota/","/oposiciones/constitucion/","/oposiciones/administracion-estado/","/oposiciones/justicia/","/oposiciones/hacienda/","/oposiciones/prisiones/","/oposiciones/policia-nacional/","/oposiciones/guardia-civil/","/oposiciones/policia-local/","/oposiciones/bomberos/","/oposiciones/sanidad/","/oposiciones/educacion/"];
 const LASTMOD = "2026-10-19";
 
 export function onRequestGet({ request }){
