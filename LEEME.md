@@ -111,8 +111,8 @@ PayPal cobra en España 2,90 % + 0,35 € por venta: de cada 2 € te quedan uno
 
 ## Google y AdSense
 
-- Search Console: añade la propiedad con **Prefijo de URL** y envía `sitemap.xml` (se genera solo con todas las páginas).
-- AdSense: pon tu ID en `adsenseClient` de `public/config.js` y en `public/ads.txt`.
+- Search Console: añade la propiedad con **Prefijo de URL** (`https://sacalaplaza.pages.dev/`), verifica con **Archivo HTML** (súbelo a la carpeta `public/` desde GitHub: se conserva aunque se regenere la web) y envía `sitemap.xml` (se genera solo con todas las páginas).
+- AdSense: pon tu ID (`ca-pub-…`) en `adsenseClient` de `public/config.js`. El archivo `ads.txt` se rellena solo con ese ID; compruébalo en `https://sacalaplaza.pages.dev/ads.txt`. Para verificar el sitio en AdSense, elige el método **ads.txt**.
 
 ### Aviso de cookies (obligatorio antes de mostrar anuncios en España)
 

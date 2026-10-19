@@ -15,7 +15,7 @@ const CONFIG = {
   demo: false,                  // Déjalo en false en la web publicada.
 
   // --- Anuncios (Google AdSense) ---
-  adsenseClient: "",           // Tu ID de editor, p. ej. "ca-pub-1234567890123456". Vacío = sin anuncios.
+  adsenseClient: "",           // Tu ID de editor, p. ej. "ca-pub-1234567890123456". Vacío = sin anuncios. El archivo ads.txt se rellena solo.
   adSlots: {"top": "", "middle": "", "bottom": ""}, // IDs de bloques de anuncio. Vacíos = usa anuncios automáticos.
 
   // --- Rutas ---
@@ -36,7 +36,7 @@ const CONFIG = {
   legal: {
     titular: "Miquel Barnada I Noguer",
     nif: "42361903C",
-    domicilio: "c/joan maragall 4",
+    domicilio: "Carrer Joan Maragall, 4, 17458 Fornells de la Selva (Girona)",
     email: "miquel.barnada7@gmail.com"
   }
 };

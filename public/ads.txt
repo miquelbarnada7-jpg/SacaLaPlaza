@@ -1,2 +1,0 @@
-# Sustituye pub-0000000000000000 por tu ID de editor de AdSense (lo verás en AdSense > Sitios > ads.txt)
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
