@@ -282,7 +282,7 @@ const withCEpref = () => store.get("withCE", true);
 /* ============================================================
    RUTAS
    ============================================================ */
-const PAGES = { inicio: "/", calculadora: "/calculadora-nota/", subir: "/sube-tus-apuntes/" };
+const PAGES = { inicio: "/", calculadora: "/calculadora-nota/", subir: "/sube-tus-apuntes/", privacidad: "/privacidad/", cookies: "/cookies/", "aviso-legal": "/aviso-legal/", condiciones: "/condiciones/" };
 function href(route){
   if (CONFIG.pathRoutes){
     if (PAGES[route]) return PAGES[route];
