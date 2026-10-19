@@ -475,7 +475,7 @@ function chunksOf(sections, maxChars){
 async function genAI(sections, n, nOpts, cat, onProg){
   const chunks = chunksOf(sections, 5500);
   if (!chunks.length) return { qs: [], fallback: n, msg: null };
-  const per = 5, need = Math.min(chunks.length, Math.ceil(n / per));
+  const per = 4, need = Math.min(chunks.length, Math.ceil(n / per));
   const step = chunks.length / need;
   const picked = Array.from({ length: need }, (_, i) => chunks[Math.min(chunks.length - 1, Math.floor(i * step + step / 2))]);
   let done = 0, stopMsg = null;
@@ -497,10 +497,10 @@ async function genAI(sections, n, nOpts, cat, onProg){
         if (["LIMIT_IA","AI_QUOTA","NO_AI","NO_SESSION","OFFLINE"].indexOf(e.code) >= 0 || e.status === 401) stopMsg = e.message;
       }
       done++;
-      onProg(done / picked.length, "Creando preguntas con IA: " + done + " de " + picked.length + " partes");
+      onProg(done / picked.length, "Creando preguntas con IA: " + done + " de " + picked.length + " partes listas");
     }
   };
-  await Promise.all([worker(), worker()]);
+  await Promise.all([worker(), worker(), worker()]);
   return { qs: results, fallback: failedK, msg: stopMsg };
 }
 
@@ -640,7 +640,17 @@ async function generateTest(){
   let qs = [], gen = "basico", note = null;
   try {
     if (mode === "ia"){
-      const r = await genAI(sel, n, nOpts, cat, setProg);
+      // La IA tarda entre unos segundos y un minuto: mostramos el tiempo y una barra que avanza sola para que no parezca parada.
+      const t0 = Date.now(); let base = 0, label = "La IA está leyendo tus apuntes y redactando las preguntas";
+      const tick = setInterval(() => {
+        const secs = Math.round((Date.now() - t0) / 1000);
+        const creep = Math.min(0.9, base + (1 - base) * (1 - Math.exp(-secs / 40)) * 0.8);
+        setProg(creep, label + "… " + secs + " s" + (secs > 25 ? " · suele tardar menos de un minuto" : ""));
+      }, 1000);
+      setProg(0.03, label + "…");
+      let r;
+      try { r = await genAI(sel, n, nOpts, cat, (f, txt) => { base = f * 0.9; label = txt; }); }
+      finally { clearInterval(tick); }
       qs = r.qs; gen = "ia";
       if (r.fallback > 0){
         const extra = genBasic(sel, r.fallback + 4, nOpts, Date.now()).filter(b => !qs.some(q => strip(q.o[0]) === strip(b.o[0]) && strip(q.q).slice(0, 40) === strip(b.q).slice(0, 40)));
