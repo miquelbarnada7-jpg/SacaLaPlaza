@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Test Agentes de Hacienda Pública gratis | Tema Común</title>
+<title>Test Agentes de Hacienda Pública gratis | SacaLaPlaza</title>
 <meta name="description" content="Tests gratis para Agentes de la Hacienda Pública: Ley General Tributaria, recargos, plazos y Constitución. 1.000 plazas de acceso libre en la OEP 2026.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Test Agentes de Hacienda Pública gratis | Tema Común">
+<meta property="og:site_name" content="SacaLaPlaza">
+<meta property="og:title" content="Test Agentes de Hacienda Pública gratis | SacaLaPlaza">
 <meta property="og:description" content="Tests gratis para Agentes de la Hacienda Pública: Ley General Tributaria, recargos, plazos y Constitución. 1.000 plazas de acceso libre en la OEP 2026.">
 <meta property="og:locale" content="es_ES">
 <meta name="theme-color" content="#23408E">
@@ -310,18 +311,107 @@ footer a{color:var(--muted)}
   .facts .v{font-size:1.1rem}
   .brand b{font-size:1.18rem}
 }
+
+/* ---------- Marca, cuenta y novedades ---------- */
+.brand-la{color:var(--accent)}
+.nav .new{font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--marker);color:var(--marker-ink);padding:1px 5px;border-radius:4px;margin-left:4px;vertical-align:2px}
+.acct{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.88rem;border:1px solid var(--line);border-radius:8px;padding:5px 11px 5px 6px;white-space:nowrap}
+.acct:hover{border-color:var(--accent)}
+.acct .avatar{width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:.78rem;font-weight:700}
+.acct:not(:has(.avatar)){padding-left:11px}
+input[type=email],input[type=password],input[type=number],.field input[type=text]{border:1px solid var(--line);background:var(--sheet);border-radius:8px;padding:9px 10px;width:100%;color:var(--ink)}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.auth-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:40px;align-items:start}
+.auth-side h1{font-size:clamp(1.9rem,4vw,2.8rem)}
+.auth-card{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);display:grid;gap:16px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:8px 10px;font-weight:600;color:var(--muted);white-space:nowrap;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.recov{border:2px dashed var(--accent);border-radius:12px;padding:16px;display:grid;gap:10px;background:var(--accent-soft);margin-bottom:18px}
+.big-code{font-size:1.25rem;font-weight:600;letter-spacing:.06em;text-align:center;background:var(--sheet)}
+details.danger{border-top:1px dashed var(--line);padding-top:10px}
+details.danger summary{cursor:pointer;color:var(--bad);font-weight:600}
+.danger-btn{background:var(--bad);border-color:var(--bad);color:#fff}
+.acct-page .section-head{align-items:center}
+/* Banda de "Sube tus apuntes" en portada */
+.upband{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center;background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.steps3{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps3 li{display:grid;grid-template-columns:2.2rem 1fr;column-gap:12px;align-items:start}
+.steps3 li .mono{grid-row:span 2;width:2.2rem;height:2.2rem;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-weight:600}
+.steps3 small{color:var(--muted);font-size:.86rem}
+/* Sube tus apuntes */
+.esc-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:36px;align-items:start}
+.esc-hero h1{font-size:clamp(1.9rem,4vw,2.8rem)}
+.auth-cta{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px}
+.privacy-note{margin-top:22px}
+.esc-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.esc-head h1{font-size:clamp(1.7rem,3.4vw,2.3rem)}
+.esc-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:20px;align-items:start}
+.esc-work{min-height:280px}
+.drop{display:grid;justify-items:center;gap:6px;text-align:center;border:2px dashed var(--line);border-radius:14px;padding:34px 16px;cursor:pointer;background:var(--bg);transition:border-color .15s,background .15s}
+.drop:hover,.drop.over,.drop:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+.drop-icon{font-size:2rem;line-height:1;color:var(--accent)}
+.scan{display:grid;gap:12px;justify-items:start;padding:10px 0}
+.scanbar{width:100%;height:10px;background:var(--accent-soft);border-radius:6px;overflow:hidden}
+.scanbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s;border-radius:6px}
+.scan-done{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--ok-soft);border-radius:10px;padding:10px 14px}
+.scan-done .hint{display:block}
+.ok-dot{width:28px;height:28px;border-radius:50%;background:var(--ok);color:var(--sheet);display:grid;place-items:center;font-weight:700}
+.scan-stats{margin:0}
+.list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.secs{display:grid;gap:6px;max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px}
+.sec{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;padding:6px 8px;border-radius:7px;cursor:pointer}
+.sec:hover{background:var(--bg)}
+.sec input{margin-top:4px;width:17px;height:17px}
+.sec b{font-weight:600;font-size:.93rem;display:block}
+.gen-choice{border:0;padding:0;margin:0;display:grid;gap:8px}
+.gen-choice legend{margin-bottom:6px}
+.radio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.radio:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.radio.off{opacity:.6;cursor:not-allowed}
+.radio input{margin-top:4px}
+.radio small{display:block}
+.tlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tlist li{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:8px}
+.tl-main{display:grid;gap:2px;min-width:0}
+.tl-main strong{overflow-wrap:anywhere}
+.tl-act{display:flex;gap:6px;flex-wrap:wrap}
+.tl-confirm{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.88rem}
+.tl-confirm:empty{display:none}
+.esc-play{max-width:860px;margin:0 auto}
+.esc-play .esc-head{display:grid;gap:10px;justify-content:stretch}
+/* Comparativa del test del día */
+.rank{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--bg);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:.92rem}
+.rank-bars{display:flex;align-items:flex-end;gap:2px;height:38px;width:88px}
+.rank-bars i{flex:1;background:var(--line);border-radius:2px 2px 0 0;min-height:3px}
+.rank-bars i.me{background:var(--accent)}
+/* Calculadora */
+.calc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:12px}
+.calc-out{position:sticky;top:90px}
+@media (max-width:900px){
+  .auth-wrap,.upband,.esc-hero,.esc-grid,.calc-grid{grid-template-columns:minmax(0,1fr)}
+  .calc-out{position:static}
+  .auth-wrap{gap:22px}
+}
+@media (max-width:640px){
+  .acct .acct-txt{display:none}
+  .acct:not(:has(.avatar)) .acct-txt{display:inline}
+  .upband{padding:18px}
+  .icon-btn#themeBtn{padding:6px 8px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
 <a class="skip" href="#view">Saltar al contenido</a>
 <header class="site">
   <div class="wrap bar">
-    <a class="brand" href="#inicio" data-route="inicio"><span class="brand-mark" aria-hidden="true">T</span><b>Tema Común</b></a>
+    <a class="brand" href="#inicio" data-route="inicio"><span class="brand-mark" aria-hidden="true">S</span><b>Saca<span class="brand-la">La</span>Plaza</b></a>
     <nav class="nav" aria-label="Secciones" id="nav"></nav>
     <div class="bar-right">
       <span class="streak" title="Días seguidos haciendo el test del día">Racha <strong id="streakVal">0</strong></span>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Cambiar tema">Tema: auto</button>
       <a class="prem-link" id="premLink" href="#premium">Premium 2 €</a>
+      <a class="acct" id="acctLink" href="#cuenta"><span class="acct-txt">Entrar</span></a>
     </div>
   </div>
 </header>
@@ -330,7 +420,7 @@ footer a{color:var(--muted)}
 <footer>
   <div class="wrap">
     <div>
-      <p><strong style="color:var(--ink)">Tema Común</strong> · tests gratis para oposiciones. Sin registro: tu progreso se guarda en este navegador.</p>
+      <p><strong style="color:var(--ink)">SacaLaPlaza</strong> · tests gratis para oposiciones y tests con tus apuntes. Sin cuenta, tu progreso se guarda en este navegador; con cuenta, en todos tus dispositivos.</p>
       <p style="margin-top:8px">Las preguntas se elaboran a partir de los textos legales vigentes. Los datos de convocatorias se revisaron el 19 de octubre de 2026: confirma siempre las fechas en el BOE o en el boletín de tu comunidad.</p>
       <p style="margin-top:8px" id="footContact"></p>
     </div>
@@ -343,18 +433,20 @@ footer a{color:var(--muted)}
       <ul>
         <li><a href="#premium">Premium</a></li>
         <li><a href="#progreso">Mi progreso</a></li>
+        <li><a href="#cuenta">Mi cuenta</a></li>
+        <li><a href="#calculadora">Calculadora de nota</a></li>
         <li><a href="#aviso-legal">Aviso legal</a></li>
         <li><a href="#privacidad">Privacidad</a></li>
         <li><a href="#cookies">Cookies</a></li>
-        <li><a href="#condiciones">Condiciones de compra</a></li>
+        <li><a href="#condiciones">Condiciones</a></li>
       </ul>
     </div>
   </div>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>window.TC_INITIAL_ROUTE = "op-hac";</script>
-<script src="/config.js"></script>
-<script src="/datos.js"></script>
-<script src="/app.js"></script>
+<script>window.SLP_VERSION = "d6c7378b"; window.TC_INITIAL_ROUTE = "op-hac";</script>
+<script src="/config.js?v=d6c7378b"></script>
+<script src="/datos.js?v=d6c7378b"></script>
+<script src="/app.js?v=d6c7378b"></script>
 </body>
 </html>

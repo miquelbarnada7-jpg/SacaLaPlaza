@@ -1,5 +1,5 @@
 /* ============================================================
-   TEMA COMÚN · DATOS
+   SACALAPLAZA · DATOS
    Categorías de oposiciones, calendario y banco de preguntas.
    Formato de cada pregunta: [referencia, enunciado, [correcta, distractor, distractor(, distractor)], explicación]
    La PRIMERA opción es siempre la correcta; la web las baraja al mostrarlas.
@@ -20,7 +20,7 @@ const CATS = [
     sueldo: "", opts: 4, pen: 1/3, penLabel: "1/3 por error (lo más habitual)", ce: false,
     tip: "Memoriza los números: plazos (72 horas, 30 días), mayorías (absoluta, 3/5, 2/3) y composiciones (12 magistrados, 20 vocales, 4 senadores).",
     fuentes: [{ t: "Texto consolidado de la Constitución (BOE)", u: "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229" }],
-    seoTitle: "Test de la Constitución Española gratis por títulos | Tema Común",
+    seoTitle: "Test de la Constitución Española gratis por títulos | SacaLaPlaza",
     seoDesc: "Tests gratis de la Constitución Española de 1978 por títulos, con el artículo exacto y explicación en cada respuesta. Para todas las oposiciones."
   },
   {
@@ -40,7 +40,7 @@ const CATS = [
       { t: "Cómo es el examen de Auxiliar (OpositaTest)", u: "https://blog.opositatest.com/test-auxiliar-administrativo-estado" },
       { t: "Sueldo y plazas de Auxiliar (que.es)", u: "https://www.que.es/2026/06/11/oposiciones-solo-eso-sueldo-1750/" }
     ],
-    seoTitle: "Test Auxiliar Administrativo del Estado gratis 2027 | Tema Común",
+    seoTitle: "Test Auxiliar Administrativo del Estado gratis 2027 | SacaLaPlaza",
     seoDesc: "Tests gratis para Auxiliar Administrativo, Administrativo y Gestión del Estado: Ley 39/2015, Ley 40/2015, TREBEP y Constitución. 5.005 plazas en la OEP 2026."
   },
   {
@@ -56,7 +56,7 @@ const CATS = [
     sueldo: "", opts: 4, pen: 1/3, penLabel: "Según convocatoria (usamos 1/3)", ce: true,
     tip: "Las plazas se reparten por territorios. Elige bien el ámbito: en algunas comunidades la nota de corte es mucho más baja.",
     fuentes: [{ t: "OEP 2026 de Justicia (Adams)", u: "https://www.adams.es/noticias/oposiciones/oep/ope-2026-justicia/" }],
-    seoTitle: "Test oposiciones Justicia gratis: Auxilio, Tramitación y Gestión | Tema Común",
+    seoTitle: "Test oposiciones Justicia gratis: Auxilio, Tramitación y Gestión | SacaLaPlaza",
     seoDesc: "Tests gratis para Auxilio Judicial, Tramitación Procesal y Gestión Procesal: LOPJ, organización judicial y Constitución. 2.003 plazas en la OEP 2026."
   },
   {
@@ -72,7 +72,7 @@ const CATS = [
     sueldo: "", opts: 4, pen: 1/4, penLabel: "1/4 por error", ce: true,
     tip: "El segundo ejercicio decide. Los 20 temas tributarios son la base de los supuestos: no los dejes para el final.",
     fuentes: [{ t: "Agentes de Hacienda: plazas y temario (RedOpositor)", u: "https://redopositor.com/blog/es-agentes-hacienda-publica-aeat-2026-plazas-temario/" }],
-    seoTitle: "Test Agentes de Hacienda Pública gratis | Tema Común",
+    seoTitle: "Test Agentes de Hacienda Pública gratis | SacaLaPlaza",
     seoDesc: "Tests gratis para Agentes de la Hacienda Pública: Ley General Tributaria, recargos, plazos y Constitución. 1.000 plazas de acceso libre en la OEP 2026."
   },
   {
@@ -91,7 +91,7 @@ const CATS = [
       { t: "Convocatoria de Ayudantes OEP 2026 (OpositaTest)", u: "https://blog.opositatest.com/convocatoria-ayudantes-instituciones-penitenciarias" },
       { t: "Fecha del examen 2026 (OpositaTest)", u: "https://blog.opositatest.com/cuando-es-examen-ayudante-instituciones-penitenciarias/" }
     ],
-    seoTitle: "Test Ayudantes de Instituciones Penitenciarias gratis | Tema Común",
+    seoTitle: "Test Ayudantes de Instituciones Penitenciarias gratis | SacaLaPlaza",
     seoDesc: "Tests gratis para Ayudantes de Instituciones Penitenciarias: LOGP, Reglamento Penitenciario y Constitución. 1.050 plazas; examen el 25 de octubre de 2026."
   },
   {
@@ -107,7 +107,7 @@ const CATS = [
     sueldo: "1.800 – 2.000 € brutos al mes al incorporarse", opts: 3, pen: 1/2, penLabel: "A − E/(n−1): con 3 opciones, 1/2 por error", ce: true,
     tip: "Con tres opciones, cada error cuesta medio acierto. Deja en blanco si no puedes descartar al menos una opción.",
     fuentes: [{ t: "Convocatoria Policía Nacional 2026 (Adams)", u: "https://www.adams.es/noticias/oposiciones/convocatorias/policia-nacional-convocatoria-2026/" }],
-    seoTitle: "Test Policía Nacional gratis Escala Básica | Tema Común",
+    seoTitle: "Test Policía Nacional gratis Escala Básica | SacaLaPlaza",
     seoDesc: "Tests gratis de Policía Nacional con 3 opciones como el examen real: LO 2/1986, Seguridad Ciudadana, Código Penal y Constitución."
   },
   {
@@ -123,7 +123,7 @@ const CATS = [
     sueldo: "", opts: 4, pen: 1/3, penLabel: "1/3 por error", ce: true,
     tip: "La ortografía elimina a mucha gente cada año. Repasa tildes diacríticas y palabras con b/v, g/j y h todos los días.",
     fuentes: [{ t: "Estructura del examen 2026 (RedOpositor)", u: "https://redopositor.com/blog/es-examen-guardia-civil-2026-estructura-prueba-conocimientos/" }],
-    seoTitle: "Test Guardia Civil gratis Cabos y Guardias 2027 | Tema Común",
+    seoTitle: "Test Guardia Civil gratis Cabos y Guardias 2027 | SacaLaPlaza",
     seoDesc: "Tests gratis de Guardia Civil: competencias, LO 2/1986, régimen de personal, historia y Constitución. 3.240 plazas en 2026."
   },
   {
@@ -139,7 +139,7 @@ const CATS = [
     sueldo: "", opts: 4, pen: 1/3, penLabel: "Según convocatoria (usamos 1/3)", ce: true,
     tip: "Vigila los boletines provinciales: muchas convocatorias pequeñas tienen poca competencia.",
     fuentes: [{ t: "Requisitos y fases de Policía Local (OpositaTest)", u: "https://blog.opositatest.com/que-hay-que-hacer-para-ser-policia-local" }],
-    seoTitle: "Test Policía Local gratis: tráfico y régimen local | Tema Común",
+    seoTitle: "Test Policía Local gratis: tráfico y régimen local | SacaLaPlaza",
     seoDesc: "Tests gratis de Policía Local: Ley de Bases del Régimen Local, Reglamento General de Circulación, LO 2/1986 y Constitución."
   },
   {
@@ -155,7 +155,7 @@ const CATS = [
     sueldo: "26.000 – 45.000 € brutos al año", opts: 4, pen: 1/3, penLabel: "Según convocatoria (usamos 1/3)", ce: true,
     tip: "Muchas convocatorias piden permiso C. Sácalo antes de que salga la tuya: tarda meses.",
     fuentes: [{ t: "Bombero 2027: requisitos y convocatorias (RedOpositor)", u: "https://redopositor.com/blog/es-oposiciones-bombero-2027-cuando-sera-la-convocatoria/" }],
-    seoTitle: "Test oposiciones Bombero gratis: fuego, hidráulica y primeros auxilios | Tema Común",
+    seoTitle: "Test oposiciones Bombero gratis: fuego, hidráulica y primeros auxilios | SacaLaPlaza",
     seoDesc: "Tests gratis para oposiciones de bombero: clases de fuego, agentes extintores, hidráulica, RCP y protección civil."
   },
   {
@@ -174,7 +174,7 @@ const CATS = [
       { t: "Macroconvocatoria SAS 2027 (que.es)", u: "https://www.que.es/2026/06/26/oposiciones-sas-2027-macroconvocatoria/" },
       { t: "Guía de oposiciones sanitarias (RedOpositor)", u: "https://redopositor.com/guia-oposiciones-sanitarias/" }
     ],
-    seoTitle: "Test oposiciones Sanidad gratis: TCAE, celador y enfermería | Tema Común",
+    seoTitle: "Test oposiciones Sanidad gratis: TCAE, celador y enfermería | SacaLaPlaza",
     seoDesc: "Tests gratis de Sanidad: Ley General de Sanidad, autonomía del paciente, técnicas de TCAE y celador. Macroconvocatoria SAS 2027 con más de 10.000 plazas."
   },
   {
@@ -193,7 +193,7 @@ const CATS = [
       { t: "Mapa de convocatorias docentes (Campus Educación)", u: "https://www.campuseducacion.com/blog/oposiciones/2027-mapa-actualizado-de-convocatorias/amp/" },
       { t: "Secundaria Andalucía 2027 (RedOpositor)", u: "https://redopositor.com/blog/es-oposiciones-secundaria-andalucia-2027-plazas-calendario/" }
     ],
-    seoTitle: "Test oposiciones Maestros y Secundaria gratis: LOMLOE | Tema Común",
+    seoTitle: "Test oposiciones Maestros y Secundaria gratis: LOMLOE | SacaLaPlaza",
     seoDesc: "Tests gratis de legislación educativa para oposiciones docentes: LOE, LOMLOE, competencias clave, evaluación y órganos de gobierno."
   }
 ];

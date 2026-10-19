@@ -1,178 +1,148 @@
-# Tema Común · Guía para publicar la web
+# SacaLaPlaza · Guía de la web
 
-Esta carpeta tiene todo lo necesario para poner la web en Internet con su propio dominio, cobrar Premium por PayPal y mostrar anuncios de Google AdSense. Sigue los pasos en orden. Calcula una tarde para los pasos 1 a 6 y unos días de espera para la aprobación de AdSense.
+Web de tests gratis para oposiciones, con cuentas de usuario, Premium de pago único ligado a la cuenta y la herramienta «Sube tus apuntes», que convierte un PDF o un Word en un test adaptado a cada oposición.
+
+Todo funciona gratis en Cloudflare Pages (dirección `sacalaplaza.pages.dev`). Esta guía explica qué hay en el proyecto y cómo dejarlo configurado.
 
 ## Qué hay en la carpeta
 
 | Carpeta o archivo | Para qué sirve |
 |---|---|
-| `public/` | La web: la portada, una página por oposición, el banco de preguntas y la configuración. |
-| `public/config.js` | **El único archivo que tienes que editar**: tu email, tus datos legales, PayPal y AdSense. |
-| `functions/` y `lib/` | El pequeño servidor que cobra con PayPal y genera los códigos Premium. No hay que tocarlos. |
-| `herramientas/generar-codigo.mjs` | Crea códigos Premium a mano si algún día vendes por Bizum o transferencia. |
+| `public/` | La web: portada, una página por oposición, «Sube tus apuntes», la calculadora de nota, el banco de preguntas y la configuración. |
+| `public/config.js` | **El único archivo que tienes que editar**: email, datos legales, PayPal y AdSense. |
+| `functions/api/[[path]].js` | El servidor: cuentas, sesiones, progreso, tests guardados, IA, Premium y test del día. |
+| `lib/` | Piezas del servidor (contraseñas, base de datos, PayPal e IA). No hay que tocarlas. |
 
-Coste total para empezar: solo el dominio (unos 10 € al año). El alojamiento en Cloudflare es gratis.
+## Configuración en Cloudflare (una sola vez)
 
----
+Todo se hace en Cloudflare → **Workers & Pages → sacalaplaza → Settings**.
 
-## Paso 1 · Compra un dominio
+### 1. Base de datos (D1) · obligatoria para las cuentas
 
-1. Elige un nombre corto y fácil de escribir, por ejemplo `temacomun.es`.
-2. Cómpralo en un registrador como DonDominio, Dinahosting, Namecheap o el propio Cloudflare. Un `.es` o un `.com` cuesta entre 7 y 15 € al año.
-3. Guarda el usuario y la contraseña del registrador: los necesitarás en el paso 4.
+1. En el menú de Cloudflare: **Storage & databases → D1 SQL database → Create database**. Nombre: `sacalaplaza`. Pulsa **Create**.
+2. Vuelve a **Workers & Pages → sacalaplaza → Settings → Bindings → Add → D1 database**.
+3. **Variable name**: `DB` (en mayúsculas). **D1 database**: `sacalaplaza`. Guarda.
 
-## Paso 2 · Sube la carpeta a GitHub
+Las tablas se crean solas la primera vez que alguien usa la web. No hay que ejecutar nada.
 
-GitHub guarda tu web y avisa a Cloudflare cada vez que cambias algo.
+### 2. Inteligencia artificial (Workers AI) · para crear preguntas con IA
 
-1. Crea una cuenta gratis en github.com.
-2. Pulsa **New repository**, ponle de nombre `tema-comun`, déjalo en **Private** y pulsa **Create repository**.
-3. En la página del repositorio vacío, pulsa **uploading an existing file**.
-4. Arrastra **el contenido** de esta carpeta (las carpetas `public`, `functions`, `lib`, `herramientas` y este `LEEME.md`), no la carpeta que las contiene. Hazlo desde Chrome o Edge para que se respeten las subcarpetas.
-5. Pulsa **Commit changes**.
+1. En **Settings → Bindings → Add → Workers AI**.
+2. **Variable name**: `AI`. Guarda.
 
-## Paso 3 · Publica la web en Cloudflare Pages
+Es gratis hasta 10.000 «neuronas» al día (unos 70 tests de 10 preguntas con el modelo que usamos). Si un día se gasta, la web usa sola el generador rápido, que no tiene límite. Si la web crece, el plan Workers Paid (5 $/mes) da mucho más margen.
 
-1. Crea una cuenta gratis en dash.cloudflare.com.
-2. Ve a **Workers & Pages → Create → Pages → Connect to Git** y elige tu repositorio `tema-comun`.
-3. En la configuración de compilación pon:
-   - **Framework preset**: None
-   - **Build command**: déjalo vacío
-   - **Build output directory**: `public`
-4. Pulsa **Save and Deploy**. En un minuto tendrás la web en una dirección del tipo `tema-comun.pages.dev`. Ábrela y comprueba que funciona.
+### 3. Variables y secretos
 
-Cloudflare detecta solo la carpeta `functions/`: ahí está el servidor de pagos.
-
-## Paso 4 · Conecta tu dominio
-
-1. En tu proyecto de Cloudflare Pages, ve a **Custom domains → Set up a custom domain** y escribe tu dominio.
-2. Cloudflare te dirá qué hacer: o mover los DNS del dominio a Cloudflare (recomendado, te guía paso a paso) o añadir un registro CNAME en tu registrador.
-3. Puede tardar desde unos minutos hasta 24 horas. El certificado https se crea solo.
-
-## Paso 5 · Rellena tus datos
-
-Abre `public/config.js` en GitHub (pulsa el archivo y luego el lápiz para editar) y cambia:
-
-```js
-siteUrl: "https://temacomun.es",        // tu dominio
-contactEmail: "hola@temacomun.es",      // un email que leas
-legal: {
-  titular: "Nombre Apellido Apellido",
-  nif: "12345678Z",
-  domicilio: "Calle, número, CP, ciudad",
-  email: "hola@temacomun.es"
-}
-```
-
-La ley española (LSSI) obliga a mostrar estos datos en el aviso legal si la web tiene anuncios o vende algo. Pulsa **Commit changes**: Cloudflare vuelve a publicar la web sola en un minuto.
-
-Haz lo mismo en `public/sitemap.xml` y `public/robots.txt`: sustituye `TU-DOMINIO.es` por tu dominio.
-
-## Paso 6 · Cobra Premium con PayPal
-
-### 6.1 Cuenta y claves
-
-1. Crea una cuenta **PayPal Business** en paypal.com/es (se puede como particular o autónomo). Si ya tienes una cuenta personal, puedes convertirla.
-2. Entra en developer.paypal.com con esa cuenta y ve a **Apps & Credentials**.
-3. Arriba verás un interruptor **Sandbox / Live**. Empieza en **Sandbox** (pruebas sin dinero real).
-4. Pulsa **Create App**, ponle de nombre `Tema Comun` y tipo **Merchant**. Copia el **Client ID** y el **Secret**.
-
-### 6.2 Variables secretas en Cloudflare
-
-En Cloudflare, en tu proyecto: **Settings → Variables and Secrets → Add**. Crea estas cinco, en el entorno **Production**:
+En **Settings → Variables and Secrets** deben estar estas (los nombres, exactamente así, en mayúsculas):
 
 | Nombre | Valor | Tipo |
 |---|---|---|
 | `PAYPAL_CLIENT_ID` | el Client ID de PayPal | Text |
-| `PAYPAL_CLIENT_SECRET` | el Secret de PayPal | **Secret** |
-| `PAYPAL_ENV` | `sandbox` (luego `live`) | Text |
-| `LICENSE_SECRET` | una frase larga inventada, de 40 caracteres o más | **Secret** |
+| `PAYPAL_CLIENT_SECRET` | el Secret de PayPal | Secret |
+| `PAYPAL_ENV` | `sandbox` para pruebas, `live` para cobrar de verdad | Text |
+| `LICENSE_SECRET` | una frase larga inventada (40 caracteres o más) | Secret |
 | `PRICE` | `2.00` | Text |
 
-`LICENSE_SECRET` firma los códigos Premium. Guárdala en un sitio seguro y no la cambies nunca: si la cambias, los códigos ya vendidos dejarán de funcionar.
+`LICENSE_SECRET` protege las contraseñas y los códigos de recuperación. **No la cambies nunca**: si la cambias, nadie podrá iniciar sesión con su contraseña actual.
 
-Después, ve a **Deployments** y pulsa **Retry deployment** en el último para que se apliquen.
+Opcionales:
 
-### 6.3 Activa el botón
+| Nombre | Para qué |
+|---|---|
+| `AI_LIMIT_FREE` | Preguntas con IA al día por cuenta gratis (por defecto 20). |
+| `AI_LIMIT_PREMIUM` | Preguntas con IA al día por cuenta Premium (por defecto 300). |
+| `AI_MODELS` | Modelos de IA separados por comas, si quieres cambiarlos. |
 
-En `public/config.js` pon tu Client ID:
+### 4. Volver a publicar
 
-```js
-paypalClientId: "AbCdEf...",   // el mismo Client ID de PAYPAL_CLIENT_ID
+Los cambios de enlaces (bindings) y variables solo se aplican en una publicación nueva. **No uses «Retry deployment» en un despliegue antiguo**: vuelve a publicar código viejo. Haz un cambio pequeño en GitHub (por ejemplo, un espacio en `public/config.js`) y Cloudflare publica la versión actual con la configuración nueva.
+
+### 5. Comprobar que todo está bien
+
+Abre `https://sacalaplaza.pages.dev/api/salud`. Debe salir algo así:
+
+```
+{"ok":true,"db":true,"ia":true,"paypal":true,"entorno":"sandbox","secreto":true,"tablas":true}
 ```
 
-### 6.4 Prueba con dinero ficticio
+Si algún valor sale `false`, revisa el paso correspondiente.
 
-1. En developer.paypal.com → **Testing Tools → Sandbox Accounts** tienes una cuenta de comprador de prueba (personal). Mira su email y contraseña.
-2. Abre tu web, ve a **Premium**, marca la casilla y paga con esa cuenta de prueba.
-3. Debe aparecer «Premium activado» y tu código. Comprueba que desaparecen los anuncios.
+## Cuentas de usuario
 
-### 6.5 Pasa a cobrar de verdad
+- Registro con email y contraseña. Al crear la cuenta, cada usuario recibe un **código de recuperación** (no hay envío de emails). Con ese código puede cambiar la contraseña si la olvida.
+- Si alguien pierde también el código, puedes ayudarle desde la consola de D1 (ver «Tareas de administración»).
+- Con la sesión iniciada, el progreso (respuestas, racha, fallos, marcadas) se sincroniza entre dispositivos.
+- Desde «Mi cuenta» cada usuario puede cambiar la contraseña, cerrar sesión en otros dispositivos, descargar sus datos y borrar su cuenta.
 
-1. En developer.paypal.com cambia el interruptor a **Live**, crea otra app igual y copia sus claves **Live**.
-2. En Cloudflare cambia `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` y pon `PAYPAL_ENV` en `live`. Vuelve a publicar.
-3. En `config.js` pon el Client ID **Live**.
+## Premium
 
-Cuánto te queda: PayPal cobra en España un 2,90 % + 0,35 € por venta, así que de cada 2 € recibes unos 1,59 €. Si en el futuro quieres pagar menos comisión, Stripe cobra 1,5 % + 0,25 € con tarjetas europeas (te quedarían 1,72 €); dímelo y lo adaptamos.
+- Para comprar hay que tener cuenta. El pago se hace con PayPal (o tarjeta a través de PayPal) y la cuenta queda Premium para siempre, en cualquier dispositivo.
+- Con Premium no se carga ningún anuncio.
 
-### ¿Y por transferencia o Bizum?
+### Probar el pago (modo sandbox)
 
-No lo recomiendo como método principal: tendrías que comprobar cada pago a mano y enviar el código tú mismo, y la gente abandona si no recibe Premium al momento. Si aun así quieres ofrecerlo:
+1. Con `PAYPAL_ENV` = `sandbox`, entra en la web, crea una cuenta y ve a **Premium**.
+2. Paga con la **cuenta de comprador de prueba** (developer.paypal.com → Testing Tools → Sandbox Accounts → la de tipo *Personal*, que acaba en `@personal.example.com`). No uses la cuenta *Business*: es la tuya como vendedor.
+3. La cuenta debe pasar a Premium al momento.
 
-1. Escribe las instrucciones en `manualPayment` de `config.js`, por ejemplo: `"Bizum al 600 000 000 con el concepto TEMA y tu email. Te enviamos el código en 24 horas."`
-2. Cuando recibas un pago, genera el código en tu ordenador (necesitas Node.js instalado):
-   ```
-   LICENSE_SECRET="tu-frase-secreta" node herramientas/generar-codigo.mjs "Bizum Ana 12-11-2026"
-   ```
-3. Envía ese código por email. La persona lo pega en la página Premium, en «¿Ya lo compraste?».
+### Cobrar de verdad
 
-No publiques tu IBAN en la web: pásalo solo por email a quien te lo pida.
+1. En developer.paypal.com cambia a **Live**, crea una app y copia sus claves Live.
+2. En Cloudflare cambia `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` y pon `PAYPAL_ENV` en `live`.
+3. En `public/config.js` pon el Client ID Live en `paypalClientId`. Guarda: se publica solo.
 
-## Paso 7 · Que Google encuentre la web
+PayPal cobra en España 2,90 % + 0,35 € por venta: de cada 2 € te quedan unos 1,59 €.
 
-1. Entra en search.google.com/search-console con tu cuenta de Google.
-2. Añade tu dominio como **propiedad de dominio** y verifica con el registro DNS que te indica (en Cloudflare: **DNS → Add record → TXT**).
-3. Ve a **Sitemaps** y envía `https://tudominio/sitemap.xml`.
+## Sube tus apuntes
 
-Cada oposición tiene su propia página (por ejemplo `/oposiciones/justicia/`) con su título y descripción para buscadores, así puedes aparecer en búsquedas como «test justicia gratis».
+- Solo se aceptan **PDF** y **Word (.docx)**, hasta 40 MB. Los `.doc` antiguos se rechazan con un aviso para guardarlos como `.docx`.
+- El documento se lee **en el navegador del usuario**; no se sube al servidor. Si el PDF está escaneado, se reconoce el texto con OCR (hasta 60 páginas por archivo).
+- Se detectan los temas («Tema 1», «Título II», «Capítulo III», títulos de Word…) para que el usuario elija qué estudiar.
+- Las preguntas se adaptan a la oposición elegida: **3 opciones en Policía Nacional** (cada fallo resta 1/2) y 4 en las demás, con su penalización.
+- Dos formas de crear preguntas: **con IA** (Workers AI, con cupo diario) o con el **generador rápido** (sin límite, frases del texto con huecos en plazos, cifras, órganos y artículos). Si la IA falla o se agota el cupo, se completa con el generador rápido.
+- Límites: cuenta gratis, tests de hasta 10 preguntas y 10 tests guardados; Premium, hasta 50 preguntas y 300 tests.
+- Para la IA solo se envían al servidor fragmentos de texto, que no se guardan.
 
-## Paso 8 · Pon anuncios con Google AdSense
+## Otras funciones
 
-AdSense revisa la web antes de aprobarla. Ayuda tener el dominio propio, las páginas legales rellenas y algo de tráfico. La aprobación suele tardar de unos días a dos semanas.
+- **Calculadora de nota** (`/calculadora-nota/`): nota con penalización, netas y aciertos necesarios.
+- **Comparativa del test del día**: al terminar, cada usuario ve qué porcentaje de opositores ha superado ese día (se muestra a partir de 10 participantes).
 
-1. Entra en adsense.google.com y regístrate con tu dominio.
-2. AdSense te dará tu ID de editor, del tipo `ca-pub-1234567890123456`.
-3. Para verificar el sitio, elige el método **fragmento de ads.txt**: abre `public/ads.txt` y sustituye `pub-0000000000000000` por tu ID (sin el `ca-`). Guarda.
-4. En `public/config.js` pon:
-   ```js
-   adsenseClient: "ca-pub-1234567890123456",
-   ```
-5. **Aviso de cookies (obligatorio en Europa)**: en AdSense ve a **Privacidad y mensajes → Europa (RGPD) → Crear mensaje**, elige tu sitio, el idioma español y publícalo. Es la herramienta de consentimiento certificada de Google: sin ella Google no muestra anuncios a usuarios europeos.
-6. Pulsa **Solicitar revisión** en AdSense y espera.
-7. Cuando te aprueben, activa los **anuncios automáticos** en AdSense (**Anuncios → Por sitio**). Si prefieres controlar dónde aparecen, crea tres bloques de anuncios «display» y pega sus IDs en `adSlots` de `config.js` (`top`, `middle`, `bottom`).
+## Google y AdSense
 
-**Premium sin anuncios ya está programado**: si alguien tiene Premium, la web no carga el código de AdSense en absoluto.
+- Search Console: añade la propiedad con **Prefijo de URL** y envía `sitemap.xml` (se genera solo con todas las páginas).
+- AdSense: pon tu ID en `adsenseClient` de `public/config.js` y en `public/ads.txt`, y crea el aviso de cookies de Google en **Privacidad y mensajes → Europa (RGPD)**.
 
-Los anuncios nunca aparecen dentro del test, junto a los botones de respuesta: AdSense penaliza los clics accidentales.
+## Tareas de administración (consola de D1)
 
-## Paso 9 · Impuestos (resumen, consulta a un gestor)
+En Cloudflare → **Storage & databases → D1 → sacalaplaza → Console** puedes ejecutar:
 
-- Los ingresos de AdSense y las ventas de Premium hay que declararlos en el IRPF.
-- Si vendes de forma habitual, Hacienda y la Seguridad Social pueden considerarlo actividad económica, lo que implica darse de alta como autónomo. Consulta a una gestoría antes de empezar a cobrar.
-- El precio de 2 € se muestra «IVA incluido». Si estás de alta, el IVA (21 %) sale de esos 2 €.
+Dar Premium a mano (por ejemplo, si alguien paga por Bizum):
 
-## Cómo conseguir visitas
+```sql
+UPDATE users SET premium = 1, premium_at = strftime('%s','now') * 1000 WHERE email = 'correo@ejemplo.com';
+```
 
-- **Publica la pregunta del día** en TikTok, Instagram y X: una captura de la pregunta y la respuesta al día siguiente. Los opositores comparten mucho.
-- **Comparte el resultado del test del día** (el botón «Copiar resultado») en grupos de Telegram y WhatsApp de opositores.
-- **Aprovecha los exámenes cercanos**: el 25 de octubre de 2026 es el examen de Ayudantes de Instituciones Penitenciarias. Publica esa semana tests de LOGP y Reglamento Penitenciario.
-- **Amplía preguntas** en las oposiciones con más búsquedas (Auxiliar del Estado, Guardia Civil, Policía Nacional). Más preguntas = más páginas vistas por visita = más ingresos.
-- Responde dudas en foros y en Reddit (r/oposiciones) enlazando la web cuando aporte.
+Ver cuántas cuentas y cuántas Premium hay:
 
-## Cómo hacer cambios más adelante
+```sql
+SELECT COUNT(*) AS cuentas, SUM(premium) AS premium FROM users;
+```
 
-- **Cambiar textos, precio, PayPal o AdSense**: edita `public/config.js` en GitHub y guarda. Se publica solo.
-- **Añadir preguntas**: están en `public/datos.js`, en el bloque de cada oposición. Cada pregunta es: referencia, enunciado, opciones (la primera es la correcta) y explicación.
-- **Actualizar fechas de convocatorias**: en `public/datos.js`, en `CAL` (tabla del calendario) y `EVENTS` (aviso destacado de arriba).
+Ver los pagos:
 
-Si algo no funciona, cuéntamelo con una captura y lo arreglamos.
+```sql
+SELECT p.order_id, u.email, p.amount, datetime(p.created_at / 1000, 'unixepoch') AS fecha FROM payments p LEFT JOIN users u ON u.id = p.user_id ORDER BY p.created_at DESC;
+```
+
+Si alguien ha perdido la contraseña y el código de recuperación: comprueba que el email es suyo (que te escriba desde ese correo) y borra la cuenta para que se registre de nuevo; si era Premium, vuelve a darle Premium con la primera orden.
+
+```sql
+DELETE FROM sessions WHERE user_id = (SELECT id FROM users WHERE email = 'correo@ejemplo.com');
+DELETE FROM users WHERE email = 'correo@ejemplo.com';
+```
+
+## Impuestos (resumen, consulta a un gestor)
+
+Los ingresos de AdSense y de Premium se declaran en el IRPF. Si vendes de forma habitual, puede considerarse actividad económica y requerir alta como autónomo.

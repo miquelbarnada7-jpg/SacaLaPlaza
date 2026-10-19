@@ -1,0 +1,4 @@
+/*.js
+  Cache-Control: public, max-age=300
+/api/*
+  Cache-Control: no-store
