@@ -15,7 +15,7 @@ const CONFIG = {
   demo: false,                  // Déjalo en false en la web publicada.
 
   // --- Anuncios (Google AdSense) ---
-  adsenseClient: "",           // Tu ID de editor, p. ej. "ca-pub-1234567890123456". Vacío = sin anuncios. El archivo ads.txt se rellena solo.
+  adsenseClient: "ca-pub-9103945932574158",           // Tu ID de editor, p. ej. "ca-pub-1234567890123456". Vacío = sin anuncios. El archivo ads.txt se rellena solo.
   adSlots: {"top": "", "middle": "", "bottom": ""}, // IDs de bloques de anuncio. Vacíos = usa anuncios automáticos.
 
   // --- Rutas ---
