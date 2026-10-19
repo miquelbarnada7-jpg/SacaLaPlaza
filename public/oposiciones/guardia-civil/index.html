@@ -272,14 +272,15 @@ td a:hover{text-decoration:underline}
 .legal h1{font-size:2rem}
 .legal h2{font-size:1.2rem;margin-top:10px}
 .legal p,.legal li{color:var(--ink);max-width:70ch}
-.legal ul{margin:0;padding-left:1.2rem;display:grid;gap:4px}
+.legal ul,.legal ol{margin:0;padding-left:1.2rem;display:grid;gap:4px}
 .legal>*{min-width:0}
 .legal p,.legal li{overflow-wrap:anywhere}
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--sheet)}
-.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl{width:100%;min-width:0;border-collapse:collapse;font-size:.92rem}
 .tbl th,.tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
 .tbl th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .tbl tr:last-child td{border-bottom:0}
+@media (max-width:640px){.tbl-wrap{overflow:visible}.tbl,.tbl tbody{display:block;width:100%}.tbl thead{display:none}.tbl tr{display:block;padding:10px 12px;border-bottom:1px solid var(--line-soft)}.tbl tr:last-child{border-bottom:0}.tbl td{display:block;border:0;padding:3px 0}.tbl td::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}}
 
 /* ---------- Ads ---------- */
 .ad{border:1px dashed var(--line);border-radius:10px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:.8rem;min-height:100px;padding:12px;margin-block:8px}
@@ -427,7 +428,7 @@ details.danger summary{cursor:pointer;color:var(--bad);font-weight:600}
   <div class="wrap">
     <div>
       <p><strong style="color:var(--ink)">SacaLaPlaza</strong> · tests gratis para oposiciones y tests con tus apuntes. Sin cuenta, tu progreso se guarda en este navegador; con cuenta, en todos tus dispositivos.</p>
-      <p style="margin-top:8px">Las preguntas se elaboran a partir de los textos legales vigentes. Los datos de convocatorias se revisaron el 19 de octubre de 2026: confirma siempre las fechas en el BOE o en el boletín de tu comunidad.</p>
+      <p style="margin-top:8px">Las preguntas se elaboran a partir de los textos legales vigentes y se revisaron con el BOE el 19 de octubre de 2026, igual que los datos de convocatorias: confirma siempre las fechas en el BOE o en el boletín de tu comunidad.</p>
       <p style="margin-top:8px" id="footContact"></p>
     </div>
     <div>
@@ -451,9 +452,9 @@ details.danger summary{cursor:pointer;color:var(--bad);font-weight:600}
   </div>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>window.SLP_VERSION = "9278e5fb"; window.TC_INITIAL_ROUTE = "op-gc";</script>
-<script src="/config.js?v=9278e5fb"></script>
-<script src="/datos.js?v=9278e5fb"></script>
-<script src="/app.js?v=9278e5fb"></script>
+<script>window.SLP_VERSION = "7f9af0e5"; window.TC_INITIAL_ROUTE = "op-gc";</script>
+<script src="/config.js?v=7f9af0e5"></script>
+<script src="/datos.js?v=7f9af0e5"></script>
+<script src="/app.js?v=7f9af0e5"></script>
 </body>
 </html>

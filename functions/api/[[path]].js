@@ -7,6 +7,9 @@ import { createSession, clearCookie, currentUser, requireUser, publicUser, endSe
 import { createOrder, captureOrder, priceOf } from "../../lib/paypal.js";
 import { generate } from "../../lib/ia.js";
 
+// Texto que el comprador acepta antes de pagar (debe coincidir con la casilla de la página de Premium).
+const CONSENT_TEXT = "Acepto las condiciones de compra y que Premium se active al momento, por lo que pierdo el derecho de desistimiento (art. 103.m de la Ley General para la Defensa de los Consumidores y Usuarios).";
+
 const OPOS = {
   ce: "Constitución Española (tema común)", age: "Administración General del Estado (Auxiliar, Administrativo y Gestión)",
   jus: "Justicia (Auxilio, Tramitación y Gestión Procesal)", hac: "Agentes de la Hacienda Pública",
@@ -166,13 +169,19 @@ async function route({ request, env }){
     return json({ ok: true });
   }
 
+  if (path === "/cuenta/compras" && M === "GET"){
+    const { results } = await DB.prepare("SELECT p.order_id, p.amount, p.created_at, c.texto AS consentimiento FROM payments p LEFT JOIN consents c ON c.order_id = p.order_id WHERE p.user_id = ? ORDER BY p.created_at").bind(u.id).all();
+    return json({ compras: results || [] });
+  }
+
   if (path === "/cuenta/datos" && M === "GET"){
     const p = await DB.prepare("SELECT data, updated_at FROM progress WHERE user_id = ?").bind(u.id).first();
     const { results } = await DB.prepare("SELECT id, title, cat, n, gen, created_at, data FROM tests WHERE user_id = ? ORDER BY created_at").bind(u.id).all();
     return json({
       cuenta: publicUser(u),
       progreso: p ? JSON.parse(p.data) : null,
-      tests: (results || []).map(t => ({ ...t, data: JSON.parse(t.data) }))
+      tests: (results || []).map(t => ({ ...t, data: JSON.parse(t.data) })),
+      compras: ((await DB.prepare("SELECT order_id, amount, created_at FROM payments WHERE user_id = ? ORDER BY created_at").bind(u.id).all()).results) || []
     }, 200, { "Content-Disposition": 'attachment; filename="sacalaplaza-mis-datos.json"' });
   }
 
@@ -273,6 +282,8 @@ async function route({ request, env }){
   /* ---------------- Premium con PayPal ---------------- */
   if (path === "/paypal/crear" && M === "POST"){
     if (u.premium) fail(409, "Tu cuenta ya es Premium.", { code: "ALREADY" });
+    const b = await readJson(request, 2000);
+    if (b.acepto !== true) fail(400, "Marca la casilla de aceptación para continuar.", { code: "NO_CONSENT" });
     return json({ id: await createOrder(env, u), precio: priceOf(env) });
   }
   if (path === "/paypal/capturar" && M === "POST"){
@@ -283,8 +294,12 @@ async function route({ request, env }){
     if (prev && prev.user_id !== u.id) fail(403, "Este pago pertenece a otra cuenta.");
     if (!prev){
       const cap = await captureOrder(env, orderId, u);
-      await DB.prepare("INSERT OR IGNORE INTO payments (order_id, user_id, amount, status, created_at) VALUES (?, ?, ?, 'COMPLETED', ?)")
-        .bind(orderId, u.id, cap.amount, Date.now()).run();
+      const t0 = Date.now();
+      // Se guarda la aceptación expresa de la pérdida del desistimiento (art. 103.m LGDCU) para el justificante.
+      await DB.batch([
+        DB.prepare("INSERT OR IGNORE INTO payments (order_id, user_id, amount, status, created_at) VALUES (?, ?, ?, 'COMPLETED', ?)").bind(orderId, u.id, cap.amount, t0),
+        DB.prepare("INSERT OR IGNORE INTO consents (order_id, user_id, texto, created_at) VALUES (?, ?, ?, ?)").bind(orderId, u.id, CONSENT_TEXT, t0)
+      ]);
     }
     const t = Date.now();
     await DB.prepare("UPDATE users SET premium = 1, premium_at = COALESCE(premium_at, ?) WHERE id = ?").bind(t, u.id).run();

@@ -209,7 +209,7 @@ function loadPayPal(){
 function buyMsg(text, kind){ const m = $("#buyMsg"); if (m){ m.className = "msg" + (kind ? " "+kind : ""); m.innerHTML = text; m.hidden = false; } }
 function premiumActivated(u){
   const r = setMe(u);
-  toast("Pago completado. Tu cuenta ya es Premium para siempre.");
+  toast("Pago completado. Tu cuenta ya es Premium para siempre. Puedes descargar el justificante en esta página o en Mi cuenta.");
   if (r !== "reload") render();
 }
 function renderPayPal(){
@@ -223,7 +223,7 @@ function renderPayPal(){
         if (!$("#consent") || !$("#consent").checked){ buyMsg("Marca la casilla de aceptación para continuar.", "err"); return actions.reject(); }
         return actions.resolve();
       },
-      createOrder: () => api("/paypal/crear", { method:"POST", data:{} }).then(d => d.id).catch(e => { buyMsg(esc(e.message), "err"); throw e; }),
+      createOrder: () => api("/paypal/crear", { method:"POST", data:{ acepto: !!($("#consent") && $("#consent").checked) } }).then(d => d.id).catch(e => { buyMsg(esc(e.message), "err"); throw e; }),
       onApprove: data => api("/paypal/capturar", { method:"POST", data:{ orderID: data.orderID } }).then(d => premiumActivated(d.user))
         .catch(e => buyMsg(esc(e.message) + " Si PayPal te ha cobrado, escríbenos" + (CONFIG.contactEmail ? " a <b>"+esc(CONFIG.contactEmail)+"</b>" : "") + " con el justificante y lo solucionamos.", "err")),
       onError: () => buyMsg("No se ha podido completar el pago. Inténtalo de nuevo.", "err")
@@ -636,12 +636,12 @@ function viewPremium(){
   const cell = v => v === 1 ? '<td class="yes">✓</td>' : v === 0 ? '<td class="no">—</td>' : '<td class="mono" style="font-size:.85rem">'+esc(v)+'</td>';
   let buy;
   if (prem){
-    buy = '<div class="buy"><p class="msg ok"><b>Tu cuenta es Premium.</b> Gracias por apoyar '+BRAND+'.</p><p>Inicia sesión con <b>'+esc(ME.email)+'</b> en cualquier móvil u ordenador y tendrás Premium allí también.</p>'+(ME.premiumDesde ? '<p class="hint">Premium desde el '+fmtDay(ME.premiumDesde)+'.</p>' : "")+'<a class="btn ghost" href="#cuenta">Ver mi cuenta</a></div>';
+    buy = '<div class="buy"><p class="msg ok"><b>Tu cuenta es Premium.</b> Gracias por apoyar '+BRAND+'.</p><p>Inicia sesión con <b>'+esc(ME.email)+'</b> en cualquier móvil u ordenador y tendrás Premium allí también.</p>'+(ME.premiumDesde ? '<p class="hint">Premium desde el '+fmtDay(ME.premiumDesde)+'.</p>' : "")+'<div class="grp" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" data-act="receipt">Descargar justificante</button><a class="btn ghost" href="#cuenta">Ver mi cuenta</a></div></div>';
   } else if (!ME){
     buy = '<div class="buy"><span class="price">'+PRICE+' <small>pago único · IVA incluido</small></span><p class="hint">Sin suscripción. No se renueva nunca.</p><p class="msg"><b>Primero, crea tu cuenta gratis.</b> Premium se guarda en tu cuenta, así lo tienes en todos tus dispositivos y no lo pierdes nunca.</p><div class="grp" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="toRegister" data-next="premium">Crear cuenta gratis</button><button class="btn ghost" data-act="toLogin" data-next="premium">Ya tengo cuenta</button></div></div>';
   } else {
     buy = '<div class="buy"><span class="price">'+PRICE+' <small>pago único · IVA incluido</small></span><p class="hint">Sin suscripción. No se renueva nunca. Se activará en la cuenta <b>'+esc(ME.email)+'</b>.</p>'+
-      '<label class="check"><input type="checkbox" id="consent"><span>Acepto las <a href="'+href("condiciones")+'">condiciones de compra</a> y que Premium se active al momento, por lo que pierdo el derecho de desistimiento (art. 103.m de la Ley de Consumidores).</span></label>';
+      '<label class="check"><input type="checkbox" id="consent"><span>Acepto las <a href="'+href("condiciones")+'">condiciones de compra</a> y que Premium se active al momento, por lo que pierdo el derecho de desistimiento (art. 103.m de la Ley General para la Defensa de los Consumidores y Usuarios).</span></label>';
     if (CONFIG.paypalClientId && !CONFIG.demo) buy += '<div id="paypalBox"></div><p class="hint">Puedes pagar con tu cuenta de PayPal o con tarjeta, sin crear cuenta en PayPal.</p>';
     else if (CONFIG.demo) buy += '<p class="msg">Vista previa: el pago con PayPal se conecta en la web publicada. Aquí puedes probar Premium gratis.</p><button class="btn gold" data-act="demoPay">Activar Premium de prueba</button>';
     else buy += '<p class="msg">Los pagos estarán disponibles muy pronto.</p>';
@@ -709,7 +709,7 @@ function viewCuenta(){
       (pendingRec ? recoveryBox(pendingRec, "Tu nuevo código de recuperación") : "")+
       '<div class="prog-grid">'+
         '<div class="panel"><h3>Mi oposición</h3><p class="hint">La usamos para adaptar los tests de tus apuntes (número de opciones y penalización).</p><label class="field"><span class="label">Oposición</span><select id="pfOpo">'+opoOptions(ME.oposicion)+'</select></label>'+(c ? '<p class="hint">'+esc(c.short)+': '+c.opts+' opciones por pregunta · penalización '+esc(c.penLabel)+'.</p>' : "")+'<div><button class="btn small" data-act="saveOpo">Guardar</button></div></div>'+
-        '<div class="panel"><h3>Premium</h3>'+(ME.premium ? '<p class="msg ok"><b>Activo para siempre.</b> Sin anuncios y con todas las herramientas.</p>' : '<p>Quita los anuncios y amplía los tests con tus apuntes por '+PRICE+', una sola vez.</p><div><a class="btn gold small" href="'+href("premium")+'">Hacerme Premium</a></div>')+'</div>'+
+        '<div class="panel"><h3>Premium</h3>'+(ME.premium ? '<p class="msg ok"><b>Activo para siempre.</b> Sin anuncios y con todas las herramientas.</p><div><button class="btn small ghost" data-act="receipt">Descargar justificante de compra</button></div>' : '<p>Quita los anuncios y amplía los tests con tus apuntes por '+PRICE+', una sola vez.</p><div><a class="btn gold small" href="'+href("premium")+'">Hacerme Premium</a></div>')+'</div>'+
         '<div class="panel"><h3>Seguridad</h3><form id="pwForm" class="stack" novalidate><label class="field"><span class="label">Contraseña actual</span><input type="password" id="pwOld" autocomplete="current-password"></label><label class="field"><span class="label">Nueva contraseña</span><input type="password" id="pwNew" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"></label><div class="grp" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="submit">Cambiar contraseña</button><button class="btn small ghost" type="button" data-act="newRec">Nuevo código de recuperación</button></div><p class="msg" id="pwMsg" hidden></p></form></div>'+
         '<div class="panel"><h3>Sesión y datos</h3><div class="grp" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small ghost" data-act="logout">Cerrar sesión</button><button class="btn small ghost" data-act="logoutAll">Cerrar sesión en los demás dispositivos</button><button class="btn small ghost" data-act="exportData">Descargar mis datos</button></div><details class="danger"><summary>Borrar mi cuenta</summary><p class="hint">Se borrarán tu cuenta, tu progreso y tus tests. '+(ME.premium ? "<b>También perderás Premium.</b> " : "")+'No se puede deshacer.</p><form id="delForm" class="stack" novalidate><label class="field"><span class="label">Escribe tu contraseña para confirmar</span><input type="password" id="delPw" autocomplete="current-password"></label><div><button class="btn small danger-btn" type="submit">Borrar mi cuenta para siempre</button></div><p class="msg" id="delMsg" hidden></p></form></details></div>'+
       '</div></div>';
@@ -815,49 +815,69 @@ function viewSubir(){
 }
 
 /* ---------- Páginas legales ---------- */
+// Tabla que en el móvil se convierte en tarjetas (cada celda lleva su encabezado en data-l).
+function legalTable(head, rows){
+  return '<div class="tbl-wrap"><table class="tbl"><thead><tr>' + head.map(h => '<th>' + h + '</th>').join("") + '</tr></thead><tbody>' +
+    rows.map(r => '<tr>' + r.map((c, i) => '<td data-l="' + head[i] + '">' + c + '</td>').join("") + '</tr>').join("") + '</tbody></table></div>';
+}
 function legalPages(){
   const L = CONFIG.legal, site = SITE || "este sitio web", mail = L.email;
   return {
     "aviso-legal": ["Aviso legal",
-      '<p>En cumplimiento del artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), se informa de los datos del titular de '+esc(site)+':</p><ul><li>Titular: '+esc(L.titular)+'</li><li>NIF: '+esc(L.nif)+'</li><li>Domicilio: '+esc(L.domicilio)+'</li><li>Email: '+esc(mail)+'</li></ul>'+
-      '<h2>Objeto</h2><p>'+BRAND+' ofrece tests de práctica para la preparación de oposiciones y una herramienta para crear tests a partir de los apuntes de cada usuario. Es un proyecto independiente y no tiene relación con ninguna Administración pública ni con los tribunales de selección.</p>'+
-      '<h2>Responsabilidad</h2><p>Las preguntas se elaboran con cuidado a partir de los textos legales, pero pueden contener errores o quedar desactualizadas por reformas posteriores. Las preguntas creadas a partir de tus apuntes se generan de forma automática (en parte con inteligencia artificial) y pueden contener errores: compruébalas siempre con tu material. Los datos sobre convocatorias son orientativos: la información oficial es la publicada en el BOE y en los boletines autonómicos.</p>'+
-      '<h2>Contenido que subes</h2><p>Solo debes subir documentos que tengas derecho a usar para tu estudio personal. Los documentos no se publican ni se comparten con otros usuarios.</p>'+
-      '<h2>Propiedad intelectual</h2><p>Los textos, preguntas, explicaciones y el diseño de la web pertenecen a su titular. Los textos legales citados son de dominio público.</p>'+
-      '<h2>Legislación aplicable</h2><p>Estas condiciones se rigen por la legislación española.</p>'],
+      '<p>En cumplimiento del artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), estos son los datos del titular de '+esc(site)+':</p><ul><li>Titular: '+esc(L.titular)+'</li><li>NIF: '+esc(L.nif)+'</li><li>Domicilio: '+esc(L.domicilio)+'</li><li>Email: '+esc(mail)+'</li></ul>'+
+      '<h2>Objeto</h2><p>'+BRAND+' ofrece tests de práctica para preparar oposiciones y una herramienta para crear tests a partir de los apuntes de cada usuario. Es un proyecto independiente: no tiene relación con ninguna Administración pública, academia ni tribunal de selección.</p>'+
+      '<h2>Exactitud de los contenidos</h2><p>Las preguntas se elaboran a partir de los textos legales vigentes y se revisan periódicamente con el BOE, pero pueden contener errores o quedar desactualizadas por reformas posteriores. Las preguntas creadas a partir de tus apuntes se generan de forma automática (en parte con inteligencia artificial) y aparecen identificadas como tales: compruébalas siempre con tu material. Los datos sobre convocatorias son orientativos; la información oficial es la publicada en el BOE y en los boletines autonómicos. Si encuentras un error, escríbenos a '+esc(mail)+'.</p>'+
+      '<h2>Uso de la web</h2><p>Debes usar la web de buena fe y para tu estudio personal. No está permitido copiar de forma masiva el banco de preguntas, automatizar peticiones, intentar acceder a cuentas ajenas ni alterar el funcionamiento de la web. Solo debes subir documentos que tengas derecho a usar para estudiar; no se publican ni se comparten con nadie.</p>'+
+      '<h2>Propiedad intelectual</h2><p>Los textos, preguntas, explicaciones, el diseño y el código de la web pertenecen a su titular. Las disposiciones legales y los actos oficiales citados no están protegidos por la propiedad intelectual (art. 13 de la Ley de Propiedad Intelectual).</p>'+
+      '<h2>Enlaces</h2><p>Los enlaces a otras webs (BOE, boletines o fuentes de información) se ofrecen como referencia. No somos responsables de su contenido.</p>'+
+      '<h2>Legislación aplicable</h2><p>Este aviso se rige por la legislación española.</p>'],
     "privacidad": ["Política de privacidad",
-      '<h2>Responsable</h2><p>'+esc(L.titular)+' ('+esc(L.nif)+'), contacto: '+esc(mail)+'.</p>'+
-      '<h2>Qué datos tratamos y para qué</h2><ul>'+
-        '<li><b>Tu cuenta</b>: email, contraseña (guardada cifrada, nunca en claro), la oposición que preparas y si tienes Premium. Sirven para darte acceso a tu cuenta desde cualquier dispositivo.</li>'+
-        '<li><b>Tu progreso de estudio</b>: respuestas, rachas, preguntas marcadas e historial. Sin cuenta, se guarda solo en tu navegador. Con la sesión iniciada, también se guarda en tu cuenta para sincronizarlo entre dispositivos.</li>'+
-        '<li><b>Tus apuntes</b>: el documento que subes se lee en tu propio navegador y <b>no se envía ni se guarda en nuestros servidores</b>. Si eliges crear preguntas con inteligencia artificial, se envían fragmentos de texto del documento a nuestro servidor, que los procesa con Cloudflare Workers AI para crear las preguntas y no los conserva. Guardamos solo las preguntas resultantes en tu cuenta, hasta que las borres.</li>'+
-        '<li><b>Compra de Premium</b>: el pago lo gestiona PayPal, que actúa como responsable independiente de tus datos de pago. Nosotros guardamos el identificador del pedido, el importe y la cuenta en la que se activa Premium. No vemos ni guardamos los datos de tu tarjeta.</li>'+
-        '<li><b>Test del día</b>: para la comparativa con otros opositores guardamos solo la puntuación de forma anónima.</li>'+
-        '<li><b>Seguridad</b>: para evitar abusos (por ejemplo, intentos de adivinar contraseñas) guardamos durante unos minutos una huella cifrada de tu dirección IP.</li>'+
-        '<li><b>Publicidad</b>: si no tienes Premium y aceptas las cookies publicitarias, Google AdSense puede usar cookies e identificadores para mostrar y medir anuncios. Más información en policies.google.com/technologies/partner-sites.</li></ul>'+
-      '<h2>Proveedores</h2><p>La web y la base de datos se alojan en Cloudflare. Las librerías para leer PDF y Word y las fuentes tipográficas se sirven desde nuestra propia web. Los pagos los procesa PayPal. Los anuncios, Google.</p>'+
-      '<h2>Base legal y conservación</h2><p>Ejecución del contrato para la cuenta, el progreso y Premium; interés legítimo para la seguridad; consentimiento para la publicidad personalizada. Conservamos tus datos mientras tengas la cuenta. Los datos de compra, el plazo que exige la normativa fiscal.</p>'+
-      '<h2>Tus derechos</h2><p>Desde «Mi cuenta» puedes descargar tus datos y borrar tu cuenta en cualquier momento. También puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a '+esc(mail)+', y reclamar ante la Agencia Española de Protección de Datos (www.aepd.es). Para crear una cuenta debes tener al menos 14 años.</p>'],
+      '<p>Te explicamos de forma clara qué datos tratamos, para qué y cuáles son tus derechos, según el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD).</p>'+
+      '<h2>Responsable</h2><p>'+esc(L.titular)+', NIF '+esc(L.nif)+', '+esc(L.domicilio)+'. Contacto para cualquier cuestión de privacidad: '+esc(mail)+'.</p>'+
+      '<h2>Qué datos tratamos, para qué y con qué base legal</h2>'+
+      legalTable(['Finalidad', 'Datos', 'Base legal', 'Conservación'], [
+        ['Tu cuenta y el acceso desde cualquier dispositivo', 'Email, contraseña (guardada cifrada, nunca en claro), código de recuperación (cifrado), oposición que preparas', 'Ejecución del contrato (art. 6.1.b RGPD)', 'Mientras tengas la cuenta'],
+        ['Guardar y sincronizar tu progreso', 'Respuestas, rachas, fallos, preguntas marcadas e historial', 'Ejecución del contrato', 'Mientras tengas la cuenta. Sin cuenta, solo en tu navegador'],
+        ['Crear tests con tus apuntes', 'Las preguntas resultantes. Tu documento se lee en tu navegador y <b>no se envía ni se guarda en nuestros servidores</b>. Si eliges la IA, se envían fragmentos de texto que no se guardan', 'Ejecución del contrato', 'Hasta que borres el test o la cuenta'],
+        ['Compra de Premium', 'Identificador del pedido, importe, fecha, cuenta y tu aceptación de las condiciones de compra', 'Ejecución del contrato y obligaciones legales contables y fiscales (art. 6.1.c)', 'El plazo legal (hasta 6 años, art. 30 del Código de Comercio), aunque borres la cuenta'],
+        ['Comparativa del test del día', 'Puntuación anónima y un identificador aleatorio de tu navegador', 'Interés legítimo (art. 6.1.f) en ofrecer estadísticas', 'Agregado y anónimo'],
+        ['Seguridad y prevención de abusos', 'Huella cifrada de tu dirección IP y de tu cuenta en los intentos de acceso y en el uso de la IA', 'Interés legítimo en proteger el servicio', 'Minutos u horas; los contadores diarios, unos días'],
+        ['Publicidad (si no tienes Premium)', 'Cookies e identificadores de Google y sus socios', 'Tu consentimiento (art. 6.1.a), que puedes retirar en cualquier momento', 'Ver la <a href="'+href("cookies")+'">política de cookies</a>']
+      ])+
+      '<p>Para crear una cuenta solo son obligatorios el email y la contraseña; sin ellos no podemos darte acceso. No tomamos decisiones automatizadas que te afecten ni elaboramos perfiles: la IA solo redacta preguntas de estudio a partir del texto que tú eliges. Para crear una cuenta debes tener al menos 14 años (art. 7 LOPDGDD).</p>'+
+      '<h2>Quién más trata tus datos</h2><ul>'+
+        '<li><b>Cloudflare</b> aloja la web y la base de datos (guardada en servidores de la Unión Europea) y ejecuta la IA (Workers AI). Actúa como encargado del tratamiento y no usa los textos que envías a la IA para entrenar modelos.</li>'+
+        '<li><b>PayPal</b> procesa los pagos como responsable independiente de tus datos de pago. Nosotros no vemos ni guardamos los datos de tu tarjeta.</li>'+
+        '<li><b>Google</b> muestra los anuncios a quienes no tienen Premium, según tu elección en el aviso de cookies.</li></ul>'+
+      '<p>No vendemos tus datos ni los cedemos a nadie más, salvo obligación legal.</p>'+
+      '<h2>Transferencias internacionales</h2><p>Cloudflare, PayPal y Google pertenecen a grupos con sede en Estados Unidos y pueden tratar algunos datos fuera del Espacio Económico Europeo. Lo hacen al amparo del Marco de Privacidad de Datos UE-EE. UU. y de las cláusulas contractuales tipo aprobadas por la Comisión Europea.</p>'+
+      '<h2>Seguridad</h2><p>Toda la web funciona con conexión cifrada (HTTPS). Las contraseñas y los códigos de recuperación se guardan cifrados con PBKDF2, y la sesión usa una cookie que no puede leer ningún script de la página.</p>'+
+      '<h2>Tus derechos</h2><p>Desde «Mi cuenta» puedes descargar todos tus datos y borrar tu cuenta en cualquier momento. También puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad, y retirar tu consentimiento, escribiendo a '+esc(mail)+'. Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).</p>'],
     "cookies": ["Política de cookies",
       '<p>Una cookie es un pequeño archivo que una web guarda en tu navegador. Aquí te explicamos cuáles usa '+BRAND+', para qué y cómo puedes decidir sobre ellas. Última revisión: 19 de octubre de 2026.</p>'+
       '<h2>Cookies y almacenamiento técnicos (no necesitan tu consentimiento)</h2><p>Son imprescindibles para que la web funcione o para darte un servicio que has pedido (art. 22.2 de la LSSI).</p>'+
-      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nombre</th><th>Titular</th><th>Para qué sirve</th><th>Duración</th></tr></thead><tbody>'+
-      '<tr><td class="mono">slp_s</td><td>'+BRAND+'</td><td>Mantener tu sesión iniciada si tienes cuenta</td><td>60 días</td></tr>'+
-      '<tr><td class="mono">tc2:*</td><td>'+BRAND+'</td><td>Almacenamiento local: tu progreso, tus fallos y preferencias como el tema claro u oscuro</td><td>Hasta que lo borres</td></tr>'+
-      '<tr><td>Cookies de PayPal</td><td>PayPal</td><td>Solo en la página de Premium y solo si inicias el pago: procesar el pago de forma segura</td><td>Las fija PayPal</td></tr>'+
-      '</tbody></table></div>'+
+      legalTable(['Nombre', 'Titular', 'Para qué sirve', 'Duración'], [
+        ['<span class="mono">slp_s</span>', ''+BRAND+'', 'Mantener tu sesión iniciada si tienes cuenta', '60 días'],
+        ['<span class="mono">tc2:*</span>', ''+BRAND+'', 'Almacenamiento local: tu progreso, tus fallos y preferencias como el tema claro u oscuro', 'Hasta que lo borres'],
+        ['Cookies de PayPal', 'PayPal', 'Solo en la página de Premium y solo si inicias el pago: procesar el pago de forma segura', 'Las fija PayPal']
+      ])+
       '<h2>Cookies publicitarias de terceros (solo con tu consentimiento)</h2><p>Si no tienes Premium, la web muestra anuncios de Google AdSense. Google y sus socios pueden usar cookies e identificadores para mostrar anuncios, limitar cuántas veces ves el mismo y medir su rendimiento, y, si lo aceptas, para personalizarlos.</p>'+
       '<p>Antes de usar estas cookies te mostramos el aviso de privacidad de Google (una herramienta de consentimiento certificada por IAB Europe), donde puedes <b>aceptar</b>, <b>rechazar</b> o <b>elegir por finalidades y por empresas</b>. Si rechazas, Google solo puede mostrar anuncios no personalizados o limitados. Cada empresa y su política aparecen en el propio aviso. Más información: <span class="mono">policies.google.com/technologies/partner-sites</span>.</p>'+
       '<p>Con Premium no se carga ningún anuncio ni ninguna cookie publicitaria. No usamos cookies de analítica.</p>'+
       '<h2>Cómo cambiar o retirar tu consentimiento</h2><p>Puedes cambiar tu elección cuando quieras desde el enlace <a href="#cookies" data-act="cookiePrefs">Configurar cookies</a>, que está siempre al pie de la página. También puedes borrar o bloquear las cookies desde la configuración de tu navegador (Chrome, Firefox, Safari o Edge); si borras el almacenamiento local, perderás el progreso que no esté guardado en una cuenta.</p>'+
       '<h2>Transferencias internacionales</h2><p>Google puede tratar datos fuera del Espacio Económico Europeo. Lo hace al amparo del Marco de Privacidad de Datos UE-EE. UU. y de cláusulas contractuales tipo de la Comisión Europea.</p>'],
     "condiciones": ["Condiciones de uso y de compra",
-      '<h2>Cuenta</h2><p>La cuenta es gratuita y personal. Eres responsable de guardar tu contraseña y tu código de recuperación. Podemos limitar el uso de las herramientas automáticas (por ejemplo, el número de preguntas con IA al día) para que el servicio siga siendo gratuito.</p>'+
-      '<h2>Producto Premium</h2><p>'+BRAND+' Premium es un acceso de por vida, ligado a tu cuenta, a funciones adicionales de la web: navegación sin anuncios, tests más largos con tus apuntes y más preguntas con IA al día, simulacros a medida, repaso de fallos y preguntas marcadas, y estadísticas avanzadas, mientras la web siga en funcionamiento. El contenido de estudio gratuito seguirá siendo gratuito.</p>'+
-      '<h2>Precio y pago</h2><p>'+PRICE+', IVA incluido, en un único pago a través de PayPal. No es una suscripción y no hay renovaciones.</p>'+
-      '<h2>Entrega</h2><p>Premium se activa al momento en tu cuenta y está disponible en cualquier dispositivo en el que inicies sesión.</p>'+
-      '<h2>Desistimiento</h2><p>Al tratarse de contenido digital que se suministra de inmediato, para comprar debes dar tu consentimiento expreso y aceptar que pierdes el derecho de desistimiento, según el artículo 103.m del Real Decreto Legislativo 1/2007 (Ley General para la Defensa de los Consumidores y Usuarios). Si Premium no funciona por un problema técnico nuestro, escríbenos a '+esc(mail)+' y lo solucionaremos o te devolveremos el importe.</p>'+
-      '<h2>Contacto</h2><p>'+esc(L.titular)+' · '+esc(mail)+'.</p>']
+      '<p>Estas condiciones regulan el uso de '+esc(site)+' y la compra de '+BRAND+' Premium. Están disponibles en español, el único idioma en que se celebra el contrato. Puedes guardarlas o imprimirlas desde tu navegador.</p>'+
+      '<h2>Cuenta</h2><p>La cuenta es gratuita y personal, y debes tener al menos 14 años. Eres responsable de guardar tu contraseña y tu código de recuperación. Podemos limitar el uso de las herramientas automáticas (por ejemplo, el número de preguntas con IA al día) para que el servicio siga siendo gratuito, y suspender cuentas que incumplan el apartado «Uso de la web» del aviso legal.</p>'+
+      '<h2>Producto Premium</h2><p>'+BRAND+' Premium es un contenido digital: un acceso de por vida, ligado a tu cuenta, a funciones adicionales de la web: navegación sin anuncios, tests más largos con tus apuntes y más preguntas con IA al día, simulacros a medida, repaso de fallos y preguntas marcadas, y estadísticas avanzadas, mientras la web siga en funcionamiento. El contenido de estudio gratuito seguirá siendo gratuito.</p>'+
+      '<h2>Precio y pago</h2><p>'+PRICE+', IVA incluido, en un único pago a través de PayPal (con tu cuenta de PayPal o con tarjeta). No es una suscripción y no hay renovaciones ni otros cargos.</p>'+
+      '<h2>Cómo se compra</h2><ol><li>Crea tu cuenta o inicia sesión.</li><li>En la página Premium, lee estas condiciones y marca la casilla de aceptación.</li><li>Pulsa el botón de PayPal y completa el pago en la ventana de PayPal. Hasta que confirmes el pago allí puedes cancelar o corregir cualquier dato sin coste.</li><li>Premium se activa al momento en tu cuenta.</li></ol>'+
+      '<h2>Confirmación y justificante</h2><p>PayPal te envía por email el recibo del pago. Además, puedes descargar en cualquier momento, desde «Mi cuenta» o la página Premium, un justificante con los datos de la compra y el consentimiento que diste. Guardamos el registro electrónico de la compra durante el plazo legal.</p>'+
+      '<h2>Desistimiento</h2><p>Al tratarse de contenido digital que se suministra de inmediato, para comprar debes dar tu consentimiento expreso y aceptar que pierdes el derecho de desistimiento, según el artículo 103.m del Real Decreto Legislativo 1/2007 (Ley General para la Defensa de los Consumidores y Usuarios).</p>'+
+      '<h2>Garantía</h2><p>Tienes los derechos de garantía legal de conformidad de los contenidos digitales (arts. 114 y siguientes de esa ley). Si Premium no funciona por un problema técnico nuestro, escríbenos a '+esc(mail)+' y lo solucionaremos o, si no es posible, te devolveremos el importe.</p>'+
+      '<h2>Cambios en el servicio y en estas condiciones</h2><p>Podemos mejorar o cambiar funciones de la web. Si en el futuro cambiamos estas condiciones, la versión aplicable a tu compra será la vigente en la fecha en que compraste.</p>'+
+      '<h2>Ley aplicable y reclamaciones</h2><p>Se aplica la legislación española. Si eres consumidor, puedes reclamar ante los juzgados de tu domicilio y acudir a los servicios de consumo de tu comunidad autónoma o ayuntamiento. Antes, escríbenos a '+esc(mail)+': intentaremos resolverlo en un plazo máximo de un mes.</p>'+
+      '<h2>Contacto</h2><p>'+esc(L.titular)+' · NIF '+esc(L.nif)+' · '+esc(L.domicilio)+' · '+esc(mail)+'.</p>']
   };
 }
 function viewLegal(key){
@@ -921,6 +941,27 @@ const ACT = {
   saveOpo: async () => { try { const d = await api("/cuenta/perfil", { method:"POST", data:{ oposicion: $("#pfOpo").value || null } }); setMe(d.user); toast("Oposición guardada"); viewCuenta(); } catch(e){ toast(e.message); } },
   logout: () => logout(),
   logoutAll: async () => { try { await api("/cuenta/cerrar-sesiones", { method:"POST", data:{} }); toast("Sesión cerrada en tus otros dispositivos"); } catch(e){ toast(e.message); } },
+  receipt: async () => {
+    try {
+      const d = await api("/cuenta/compras");
+      if (!d.compras || !d.compras.length){ toast("No hay pagos registrados en tu cuenta. Si te activamos Premium a mano, escríbenos y te enviamos el justificante."); return; }
+      const L = CONFIG.legal, c = d.compras[d.compras.length - 1];
+      const fecha = new Date(c.created_at).toLocaleString("es-ES", { timeZone: "Europe/Madrid", dateStyle: "long", timeStyle: "short" });
+      const imp = String(c.amount || "").replace(".", ",") + " €";
+      const base = (parseFloat(c.amount) / 1.21).toFixed(2).replace(".", ","), iva = (parseFloat(c.amount) - parseFloat(c.amount) / 1.21).toFixed(2).replace(".", ",");
+      const row = (k, v) => '<tr><th>' + esc(k) + '</th><td>' + esc(v) + '</td></tr>';
+      const html = '<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Justificante de compra · ' + esc(BRAND) + '</title><style>body{font:15px/1.5 system-ui,sans-serif;color:#142033;max-width:640px;margin:32px auto;padding:0 16px}h1{font-size:1.4rem}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{text-align:left;padding:8px;border-bottom:1px solid #ddd;vertical-align:top}th{width:38%;color:#556174;font-weight:600}.n{font-size:.85rem;color:#556174}</style></head><body>' +
+        '<h1>Justificante de compra · ' + esc(BRAND) + ' Premium</h1><table>' +
+        row("Vendedor", L.titular + " · NIF " + L.nif) + row("Domicilio", L.domicilio) + row("Contacto", L.email) +
+        row("Cliente (cuenta)", ME.email) + row("Producto", BRAND + " Premium: acceso de por vida, ligado a la cuenta (contenido digital)") +
+        row("Fecha de la compra", fecha) + row("Pedido de PayPal", c.order_id) + row("Importe total (IVA incluido)", imp) + row("Desglose orientativo", "Base " + base + " € + IVA 21 % " + iva + " €") +
+        row("Forma de pago", "PayPal") + row("Entrega", "Activación inmediata en la cuenta") +
+        row("Consentimiento expreso", c.consentimiento || "Aceptado en la página de compra antes del pago.") + '</table>' +
+        '<p class="n">Este documento confirma la compra y el consentimiento prestado para la ejecución inmediata del contrato, con la pérdida del derecho de desistimiento (art. 103.m del Real Decreto Legislativo 1/2007). No es una factura; si necesitas factura, escribe a ' + esc(L.email) + '. Las condiciones de compra están en ' + esc(location.origin) + '/#condiciones.</p></body></html>';
+      const blob = new Blob([html], { type: "text/html" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "justificante-sacalaplaza-" + c.order_id + ".html"; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    } catch(e){ toast(e.message); }
+  },
   exportData: async () => {
     try {
       const d = await api("/cuenta/datos");

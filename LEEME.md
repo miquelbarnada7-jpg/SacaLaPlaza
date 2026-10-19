@@ -153,6 +153,24 @@ DELETE FROM sessions WHERE user_id = (SELECT id FROM users WHERE email = 'correo
 DELETE FROM users WHERE email = 'correo@ejemplo.com';
 ```
 
-## Impuestos (resumen, consulta a un gestor)
+## Impuestos y autónomo (resumen revisado en octubre de 2026; confírmalo con un gestor)
 
-Los ingresos de AdSense y de Premium se declaran en el IRPF. Si vendes de forma habitual, puede considerarse actividad económica y requerir alta como autónomo.
+**Qué es fiscalmente esta web.** Cobrar anuncios y vender Premium de forma continuada es una *actividad económica*, aunque los importes sean pequeños.
+
+**Alta en Hacienda (gratis).** Modelo 036 antes de empezar a cobrar, en el epígrafe de servicios de publicidad o de servicios digitales que te indique el gestor. En el mismo modelo pide el alta en el **ROI** (operadores intracomunitarios): AdSense te paga desde Google Ireland y sin ROI no puedes facturarle correctamente.
+
+**IVA.**
+- Premium (venta a particulares): se cobra IVA español del 21 % mientras tus ventas a consumidores de otros países de la UE no pasen de 10.000 € al año. Con 2 € IVA incluido, unos 0,35 € son IVA. Hoy no hay en España un mínimo de ventas por debajo del cual no se cobre IVA.
+- AdSense (Google Ireland, empresa de la UE): factura sin IVA, por *inversión del sujeto pasivo*, e informa en el modelo 349.
+- Declaraciones: modelo 303 cada trimestre y 390 al año.
+
+**IRPF.** Los beneficios (ingresos menos gastos) tributan en tu renta como rendimientos de actividades económicas. Normalmente hay que presentar el modelo 130 cada trimestre (pago a cuenta del 20 % del beneficio).
+
+**Autónomo (Seguridad Social).**
+- El Tribunal Supremo (sentencia 941/2025, de 10 de julio) aclaró que ganar menos que el salario mínimo **no exime por sí solo** del alta: cuenta si la actividad es habitual. El SMI solo es un criterio orientativo (salvo para pensionistas, para quienes sí es el límite).
+- Si te das de alta por primera vez (o no lo estuviste en los últimos 2 años): **tarifa plana de 80 € al mes** durante 12 meses, y otros 12 si tus ingresos netos previstos son inferiores al SMI.
+- Después, la cuota depende del rendimiento neto: el tramo más bajo (hasta 670 € al mes) está en torno a 205 € al mes en 2026.
+
+**Facturación.** Guarda los justificantes de PayPal y de Google. El sistema **Verifactu** (software de facturación homologado) será obligatorio para autónomos desde el **1 de julio de 2027** (Real Decreto-ley 15/2025).
+
+**Consejo práctico.** Mientras la web no genere ingresos no hay nada que declarar. Antes del primer cobro real (AdSense aprobado o PayPal en modo Live), habla con un gestor para el 036, el ROI y la decisión sobre el alta de autónomo. PayPal cobra en España 2,90 % + 0,35 € por venta, que es un gasto deducible.
