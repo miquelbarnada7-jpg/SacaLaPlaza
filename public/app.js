@@ -835,13 +835,22 @@ function legalPages(){
         '<li><b>Test del día</b>: para la comparativa con otros opositores guardamos solo la puntuación de forma anónima.</li>'+
         '<li><b>Seguridad</b>: para evitar abusos (por ejemplo, intentos de adivinar contraseñas) guardamos durante unos minutos una huella cifrada de tu dirección IP.</li>'+
         '<li><b>Publicidad</b>: si no tienes Premium y aceptas las cookies publicitarias, Google AdSense puede usar cookies e identificadores para mostrar y medir anuncios. Más información en policies.google.com/technologies/partner-sites.</li></ul>'+
-      '<h2>Proveedores</h2><p>La web y la base de datos se alojan en Cloudflare. Las librerías para leer PDF y Word se descargan de jsDelivr. Los pagos los procesa PayPal. Los anuncios, Google.</p>'+
+      '<h2>Proveedores</h2><p>La web y la base de datos se alojan en Cloudflare. Las librerías para leer PDF y Word y las fuentes tipográficas se sirven desde nuestra propia web. Los pagos los procesa PayPal. Los anuncios, Google.</p>'+
       '<h2>Base legal y conservación</h2><p>Ejecución del contrato para la cuenta, el progreso y Premium; interés legítimo para la seguridad; consentimiento para la publicidad personalizada. Conservamos tus datos mientras tengas la cuenta. Los datos de compra, el plazo que exige la normativa fiscal.</p>'+
       '<h2>Tus derechos</h2><p>Desde «Mi cuenta» puedes descargar tus datos y borrar tu cuenta en cualquier momento. También puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a '+esc(mail)+', y reclamar ante la Agencia Española de Protección de Datos (www.aepd.es). Para crear una cuenta debes tener al menos 14 años.</p>'],
     "cookies": ["Política de cookies",
-      '<p>Esta web usa una cookie técnica para mantener tu sesión iniciada (<span class="mono">slp_s</span>, dura hasta 60 días) y el almacenamiento local del navegador para guardar tu progreso y tus preferencias, como el tema claro u oscuro. Son imprescindibles para el funcionamiento de la web y no requieren consentimiento.</p>'+
-      '<h2>Cookies de terceros</h2><p>Si no tienes Premium, la web muestra anuncios de Google AdSense. Google y sus socios pueden instalar cookies para mostrar anuncios, limitar su repetición y medir su rendimiento. Solo se usan para publicidad personalizada si das tu consentimiento en el aviso de privacidad que aparece al entrar. Al pagar con PayPal, PayPal puede usar sus propias cookies.</p>'+
-      '<h2>Cómo cambiar tu elección</h2><p>Puedes cambiar tu consentimiento en cualquier momento desde el enlace de preferencias de privacidad del aviso de cookies, o borrar las cookies desde la configuración de tu navegador. Con Premium no se cargan anuncios.</p>'],
+      '<p>Una cookie es un pequeño archivo que una web guarda en tu navegador. Aquí te explicamos cuáles usa '+BRAND+', para qué y cómo puedes decidir sobre ellas. Última revisión: 19 de octubre de 2026.</p>'+
+      '<h2>Cookies y almacenamiento técnicos (no necesitan tu consentimiento)</h2><p>Son imprescindibles para que la web funcione o para darte un servicio que has pedido (art. 22.2 de la LSSI).</p>'+
+      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nombre</th><th>Titular</th><th>Para qué sirve</th><th>Duración</th></tr></thead><tbody>'+
+      '<tr><td class="mono">slp_s</td><td>'+BRAND+'</td><td>Mantener tu sesión iniciada si tienes cuenta</td><td>60 días</td></tr>'+
+      '<tr><td class="mono">tc2:*</td><td>'+BRAND+'</td><td>Almacenamiento local: tu progreso, tus fallos y preferencias como el tema claro u oscuro</td><td>Hasta que lo borres</td></tr>'+
+      '<tr><td>Cookies de PayPal</td><td>PayPal</td><td>Solo en la página de Premium y solo si inicias el pago: procesar el pago de forma segura</td><td>Las fija PayPal</td></tr>'+
+      '</tbody></table></div>'+
+      '<h2>Cookies publicitarias de terceros (solo con tu consentimiento)</h2><p>Si no tienes Premium, la web muestra anuncios de Google AdSense. Google y sus socios pueden usar cookies e identificadores para mostrar anuncios, limitar cuántas veces ves el mismo y medir su rendimiento, y, si lo aceptas, para personalizarlos.</p>'+
+      '<p>Antes de usar estas cookies te mostramos el aviso de privacidad de Google (una herramienta de consentimiento certificada por IAB Europe), donde puedes <b>aceptar</b>, <b>rechazar</b> o <b>elegir por finalidades y por empresas</b>. Si rechazas, Google solo puede mostrar anuncios no personalizados o limitados. Cada empresa y su política aparecen en el propio aviso. Más información: <span class="mono">policies.google.com/technologies/partner-sites</span>.</p>'+
+      '<p>Con Premium no se carga ningún anuncio ni ninguna cookie publicitaria. No usamos cookies de analítica.</p>'+
+      '<h2>Cómo cambiar o retirar tu consentimiento</h2><p>Puedes cambiar tu elección cuando quieras desde el enlace <a href="#cookies" data-act="cookiePrefs">Configurar cookies</a>, que está siempre al pie de la página. También puedes borrar o bloquear las cookies desde la configuración de tu navegador (Chrome, Firefox, Safari o Edge); si borras el almacenamiento local, perderás el progreso que no esté guardado en una cuenta.</p>'+
+      '<h2>Transferencias internacionales</h2><p>Google puede tratar datos fuera del Espacio Económico Europeo. Lo hace al amparo del Marco de Privacidad de Datos UE-EE. UU. y de cláusulas contractuales tipo de la Comisión Europea.</p>'],
     "condiciones": ["Condiciones de uso y de compra",
       '<h2>Cuenta</h2><p>La cuenta es gratuita y personal. Eres responsable de guardar tu contraseña y tu código de recuperación. Podemos limitar el uso de las herramientas automáticas (por ejemplo, el número de preguntas con IA al día) para que el servicio siga siendo gratuito.</p>'+
       '<h2>Producto Premium</h2><p>'+BRAND+' Premium es un acceso de por vida, ligado a tu cuenta, a funciones adicionales de la web: navegación sin anuncios, tests más largos con tus apuntes y más preguntas con IA al día, simulacros a medida, repaso de fallos y preguntas marcadas, y estadísticas avanzadas, mientras la web siga en funcionamiento. El contenido de estudio gratuito seguirá siendo gratuito.</p>'+
@@ -890,6 +899,14 @@ const ACT = {
   groupAll: () => startQuiz({ ...baseOpts(CUR), mode:"group", title:"Todo mezclado · " + CUR.short, qs: shuffle(poolFor(CUR, withCEpref())), feedback:true }),
   toggleChip: b => b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true"),
   toPremium: () => { location.hash = "premium"; },
+  cookiePrefs: () => {
+    if (isPremium()){ toast("Con Premium no se cargan anuncios ni cookies publicitarias."); return; }
+    if (!CONFIG.adsenseClient){ toast("Ahora mismo la web no usa cookies publicitarias."); return; }
+    window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+    window.googlefc.callbackQueue.push(() => { try { window.googlefc.showRevocationMessage(); } catch(e){ toast("No se ha podido abrir el panel. Desactiva el bloqueador de anuncios e inténtalo de nuevo."); } });
+    initAds();
+    setTimeout(() => { if (!window.googlefc || typeof window.googlefc.showRevocationMessage !== "function") toast("No se ha podido abrir el panel. Desactiva el bloqueador de anuncios e inténtalo de nuevo."); }, 4000);
+  },
   toRegister: b => { authTab = "register"; if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta") render(); else location.hash = "cuenta"; },
   toLogin: b => { authTab = "login"; if (b && b.dataset.next) store.set("next", b.dataset.next); if (currentRoute() === "cuenta") render(); else location.hash = "cuenta"; },
   tab: b => { authTab = b.dataset.t; viewCuenta(); },

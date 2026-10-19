@@ -12,9 +12,8 @@
 <meta property="og:locale" content="es_ES">
 <meta name="theme-color" content="#23408E">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Spectral:wght@500;600;700&display=swap">
+<link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 /* Layout: mesa de estudio. Cabecera fina, vistas que cambian (inicio, oposición, premium, progreso) y una hoja de examen como pieza central. */
 :root{
@@ -274,6 +273,13 @@ td a:hover{text-decoration:underline}
 .legal h2{font-size:1.2rem;margin-top:10px}
 .legal p,.legal li{color:var(--ink);max-width:70ch}
 .legal ul{margin:0;padding-left:1.2rem;display:grid;gap:4px}
+.legal>*{min-width:0}
+.legal p,.legal li{overflow-wrap:anywhere}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--sheet)}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th,.tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.tbl th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:0}
 
 /* ---------- Ads ---------- */
 .ad{border:1px dashed var(--line);border-radius:10px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:.8rem;min-height:100px;padding:12px;margin-block:8px}
@@ -438,15 +444,16 @@ details.danger summary{cursor:pointer;color:var(--bad);font-weight:600}
         <li><a href="#aviso-legal">Aviso legal</a></li>
         <li><a href="#privacidad">Privacidad</a></li>
         <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#cookies" data-act="cookiePrefs">Configurar cookies</a></li>
         <li><a href="#condiciones">Condiciones</a></li>
       </ul>
     </div>
   </div>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>window.SLP_VERSION = "d6c7378b"; window.TC_INITIAL_ROUTE = "subir";</script>
-<script src="/config.js?v=d6c7378b"></script>
-<script src="/datos.js?v=d6c7378b"></script>
-<script src="/app.js?v=d6c7378b"></script>
+<script>window.SLP_VERSION = "f8228824"; window.TC_INITIAL_ROUTE = "subir";</script>
+<script src="/config.js?v=f8228824"></script>
+<script src="/datos.js?v=f8228824"></script>
+<script src="/app.js?v=f8228824"></script>
 </body>
 </html>

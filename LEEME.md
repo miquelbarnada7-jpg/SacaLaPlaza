@@ -112,7 +112,17 @@ PayPal cobra en España 2,90 % + 0,35 € por venta: de cada 2 € te quedan uno
 ## Google y AdSense
 
 - Search Console: añade la propiedad con **Prefijo de URL** y envía `sitemap.xml` (se genera solo con todas las páginas).
-- AdSense: pon tu ID en `adsenseClient` de `public/config.js` y en `public/ads.txt`, y crea el aviso de cookies de Google en **Privacidad y mensajes → Europa (RGPD)**.
+- AdSense: pon tu ID en `adsenseClient` de `public/config.js` y en `public/ads.txt`.
+
+### Aviso de cookies (obligatorio antes de mostrar anuncios en España)
+
+La web ya está preparada: no carga anuncios ni cookies publicitarias hasta que Google pide el consentimiento, las fuentes y las librerías se sirven desde la propia web, y el pie tiene el enlace **Configurar cookies** para cambiar la elección. Solo falta crear el aviso en AdSense, que es gratis y está certificado por IAB Europe (lo exige Google en Europa desde el 16 de enero de 2024):
+
+1. AdSense → **Privacidad y mensajes → Normativa europea → Crear mensaje**.
+2. Sitio: `sacalaplaza.pages.dev`. Idioma: **Español**. Enlace a la política de privacidad: `https://sacalaplaza.pages.dev/#privacidad`.
+3. En **Opciones de usuario** elige **Consentir, No consentir y Gestionar opciones**. Es importante: la AEPD exige que rechazar sea tan fácil como aceptar.
+4. Activa la opción de mostrar el **icono o enlace para volver a cambiar la elección** si te la ofrece (la web ya trae su propio enlace «Configurar cookies»).
+5. Pulsa **Publicar**. Desde ese momento, quien entre desde Europa verá el aviso antes de que se personalicen los anuncios.
 
 ## Tareas de administración (consola de D1)
 
